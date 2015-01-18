@@ -55,17 +55,14 @@
 \begin{document}
 
 % paper title
-\title{Seminar paper template}	
+\title{Integration of Static Security Code Analysis in Continuous Integration Lifecycles}
 
 
 % author names and affiliations
-\author{\authorblockN{Michael Meyers, Homer Simpson\authorrefmark{1},
-James T. Kirk\authorrefmark{2} and Montgomery Scott\authorrefmark{2}}
-\authorblockA{Databases and Distributed Systems Group\\
+\author{\authorblockA{Sebastian Funke, Brian Pfretzschner, Hamza Zulfiqar}
+\authorblockA{Center for Advanced Security Research Darmstadt\\
 Department of Computer Science\\
-Technische Universit\"at Darmstadt, Germany}
-\authorblockA{\authorrefmark{1}Multimedia Communications Lab}
-\authorblockA{\authorrefmark{2}Starfleet Academy}}
+Technische Universit\"at Darmstadt, Germany}}
 
 
 \maketitle
@@ -81,11 +78,36 @@ The abstract goes here.
 
 
 \section{Introduction}
-This demo file is intended to serve as a ``starter file"
-for IEEE conference papers produced under \LaTeX\ using IEEEtran.cls version
-1.6b and later.
 
-May all your publication endeavors be successful.
+
+
+\section{Dump}
+
+\subsection{CI Server}
+
+\subsubsection{Open Source}
+\begin{itemize}
+	\item \href{http://jenkins-ci.org}{Jenkins}
+	\item \href{http://continuum.apache.org}{Apache Continuum}
+\end{itemize}
+
+\subsubsection{Commercial}
+\begin{itemize}
+	\item \href{http://www.jetbrains.com/teamcity}{TeamCity}\\
+	Supports static code analysis. Also, it can import analysis reports produced by these tools: PMD, PMD/CPD, FindBugs, Checkstyle or JSLint.
+\end{itemize}
+
+\subsection{Tools}
+\begin{itemize}
+	\item SonarQube
+\end{itemize}
+
+\subsection{Might be interesting to read}
+\begin{itemize}
+	\item \href{http://www.crosstalkonline.org/storage/issue-archives/2010/201003/201003-Stiehm.pdf}{Building Security In Using Continuous Integration}
+\end{itemize}
+
+
 
 
 \section{Now your Stuff}
@@ -95,6 +117,7 @@ Your stuff goes here.
 A reference \cite{Akyildiz2002}.
 
 \subsubsection{Subsubsection}
+
 
 
 %An example of a floating figure using the graphicx package.
