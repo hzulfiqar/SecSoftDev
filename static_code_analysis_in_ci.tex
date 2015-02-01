@@ -39,6 +39,7 @@
 \else                   % http://www.ctan.org/tex-archive/macros/latex/contrib/supported/hyperref/
 \usepackage[pdftex,hypertexnames=false]{hyperref}
 \fi
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
 
 
@@ -90,17 +91,10 @@
 
 \begin{abstract}
 \boldmath
-In our paper we present our research results for the question: How to integrate static code analysis for security in a common continuous integration (CI) process of software development.
-And evaluate the vulnerability reporting capabilities in Jenkins and the open source quality management tool SonarQube.
-We used the popular CI tool Jenkins on a NIST standardized C test project\footnote{\url{http://samate.nist.gov/SRD/testsuite.php}} with a variety of vulnerabilities.
-Thereby we included a couple of static analysis tools in Jenkins for finding bugs and vulnerabilities during build and after the build process.
-Furthermore we analyzed how input validation is deployed in popular PHP frameworks.
+Static code analysis should run frequently in an continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reworked, concentrated and presented in a helpful manner.
 \end{abstract}
 
 % no keywords
-
-
-
 
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
@@ -110,10 +104,16 @@ Furthermore we analyzed how input validation is deployed in popular PHP framewor
 
 \section{Introduction}
 % no \IEEEPARstart
-Content from our slides...about input validation and how static code analysis works.
+\todo[inline]{Content from our slides...about input validation and how static code analysis works.
 Limitation on open source, static analysis tools. Jenkins, SonarQube...and why\cite{IEEEexample:bluebookarticle}.
-Content of our paper, what comes when blabla...
+Content of our paper, what comes when blabla...}
 
+
+
+We evaluate the vulnerability reporting capabilities in Jenkins and the open source quality management tool SonarQube.
+We used the popular CI tool Jenkins on a NIST standardized C test project\footnote{\url{http://samate.nist.gov/SRD/testsuite.php}} with a variety of vulnerabilities.
+Thereby we included a couple of static analysis tools in Jenkins for finding bugs and vulnerabilities during build and after the build process.
+Furthermore we analyzed how input validation is deployed in popular PHP frameworks.
 
 \section{Input validation in popular frameworks}
 \label{sec:input_validation}
