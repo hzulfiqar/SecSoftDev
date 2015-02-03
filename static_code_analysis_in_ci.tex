@@ -113,12 +113,12 @@ Content of our paper, what comes when blabla...}
 We evaluate the vulnerability reporting capabilities in Jenkins and the open source quality management tool SonarQube.
 We used the popular CI tool Jenkins on a NIST standardized C test project\footnote{\url{http://samate.nist.gov/SRD/testsuite.php}} with a variety of vulnerabilities.
 Thereby we included a couple of static analysis tools in Jenkins for finding bugs and vulnerabilities during build and after the build process.
-Furthermore we analyzed how input validation is deployed in popular PHP frameworks.
+we address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
 
 \section{Input validation in popular frameworks}
 \label{sec:input_validation}
 Check those \url{http://codegeekz.com/20-best-php-frameworks-developers-august-2014/} and make a table how input validation is handled there...
-
+The most common security weakness in any application is the failure to properly validate input from the environment. This weakness further leads to almost all of the major vulnerabilities in applications, including buffer overflow, SQL injection and a whole lot more. So, the maximum essential cautious measure that developers can take is to comprehensively authenticate the input that a software obtains. Certainly programs need to accept input, and computing a decent result depends on having a good input. There is a misconception that input can be trusted just because it is coming from some so-called trusted source. Input must not enter into the system without passing through various security methods.
 
 \section{Static code analysis in Jenkins}
 \label{sec:static_code_analysis_jenkins}
