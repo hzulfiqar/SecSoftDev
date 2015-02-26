@@ -1,1 +1,15 @@
 \section{C/C++}
+
+\subsection{Cppcheck}
+\textit{Cppcheck} is a very powerful analyzer for C and C++ which can find a lot different code issues. For example it tries to find out-of-bounds accesses, memory leaks or warn if obsolete or unsafe functions are used. Its main goal is to avoid false positives.
+
+Cppcheck is easy to use and can be integrated in an continuous life cycle with very little effort.
+Listing \ref{lst:cppcheck} shows how to run a Cppcheck analysis on C/C++ project. Cppcheck will examine any C/C++ file in the current folder and any folder below that (recursively) and create a XML summary file named \textit{cppcheck.xml}.
+
+\begin{lstlisting}[caption={Bash command to run Cppcheck},label={lst:cppcheck}]
+$ cppcheck --xml . 2> cppcheck.xml
+\end{lstlisting}
+
+
+\subsubsection{Cppcheck \& Jenkins}
+
