@@ -4,12 +4,16 @@
 \textit{Cppcheck} is a very powerful analyzer for C and C++ which can find a lot different code issues. For example it tries to find out-of-bounds accesses, memory leaks or warn if obsolete or unsafe functions are used. Its main goal is to avoid false positives.
 
 Cppcheck is easy to use and can be integrated in an continuous life cycle with very little effort.
-Listing \ref{lst:cppcheck} shows how to run a Cppcheck analysis on C/C++ project. Cppcheck will examine any C/C++ file in the current folder and any folder below that (recursively) and create a XML summary file named \textit{cppcheck.xml}.
+Listing \ref{lst:cppcheck} shows how to run a Cppcheck analysis on C/C++ project. When you use this command, Cppcheck will run with 4 threads (\texttt{-j 4}), does all analysis it supports (\texttt{--enable=all}) and writes the results as xml file on disk after it examined any C/C++ file in the current folder and any folder below that (recursively).
 
 \begin{lstlisting}[caption={Bash command to run Cppcheck},label={lst:cppcheck}]
-$ cppcheck --xml . 2> cppcheck.xml
+$ cppcheck -j 4 --enable=all \
+	--xml --xml-version=2 . \
+	2> cppcheck.xml
 \end{lstlisting}
 
 
 \subsubsection{Cppcheck \& Jenkins}
+There exists a dedicated \href{https://wiki.jenkins-ci.org/display/JENKINS/Cppcheck+Plugin}{Jenkins plugin for Cppcheck}. This plugin does not include the Cppcheck analysis. This has to be performed as a build step which produces a XML-file containing the analysis results. The plugin will then, as a post-build task, read the XML-file and display the contents in a processed manner.
 
+\subsubsection{Cppcheck \& SonarQube}
