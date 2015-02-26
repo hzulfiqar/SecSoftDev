@@ -115,6 +115,9 @@ We used the popular CI tool Jenkins on a NIST standardized C test project\footno
 Thereby we included a couple of static analysis tools in Jenkins for finding bugs and vulnerabilities during build and after the build process.
 we address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
 
+\subsection{Types of Analyzers}
+There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
+
 \section{Input validation in popular frameworks}
 \label{sec:input_validation}
 Check those \url{http://codegeekz.com/20-best-php-frameworks-developers-august-2014/} and make a table how input validation is handled there...
@@ -141,7 +144,9 @@ Todo: Table with tools with pros and cons
 \section{Static code analysis in SonarQube}
 \label{sec:static_code_analysis_sonarqube}
 
-\include{chapter_c}
+We subdivide our evaluations by programming language because the analyzers and their main purpose differs heavily in respect to their target language.
+
+\input{chapter_c}
 
 \section{Evaluation of reporting capabilities}
 \label{sec:evaluation}
