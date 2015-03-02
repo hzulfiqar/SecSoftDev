@@ -110,10 +110,34 @@ Content of our paper, what comes when blabla...}
 
 Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}.
 
-We evaluate the vulnerability reporting capabilities in Jenkins and the open source quality management tool SonarQube.
-We used the popular CI tool Jenkins on a NIST standardized C test project\footnote{\url{http://samate.nist.gov/SRD/testsuite.php}} with a variety of vulnerabilities.
-Thereby we included a couple of static analysis tools in Jenkins for finding bugs and vulnerabilities during build and after the build process.
-we address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
+
+Therefore we have to improve the software development process in terms of early and continuous security analysis of the source code.
+Such static analysis tools can be applied independently during the development process at different stages.
+One option would be the integration of analyzers within the IDE of the developer.
+Another possibility is the combination of those tools in a continuous integration system, to collect issues during or after the build process.
+Besides CI, IDE and the development tool chain can be extended with code quality management systems, as platform for analyze the code and manage the analyzed issues.
+
+
+In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), two code quality management tools (SonarQube, Codeclimate) and the IDE Eclipse.
+We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnotetext{http://www.jedit.org/}) with a variety of issues.
+
+
+We address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
+
+
+
+
+
+\todo[inline]{Outline with section numbers (explain the structure of the paper)}
+
+
+\subsection{Types of Analyzers}
+There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
+
+
+Furthermore it is important to distinguish when to apply analyzers in the Software Development Lifecycle.
+Most analyzer exist as stand-alone version and allow the integration in common development tools, like IDE's and CI tools.
+
 
 Advantages of Continuous Integration (CI)\cite{SecurityinCI}:
 \begin{itemize}
@@ -122,22 +146,46 @@ Advantages of Continuous Integration (CI)\cite{SecurityinCI}:
 	
 	\item \textit{Secure Development}
 	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
-security testing and secure code review begins when a project begins and runs continuously
-throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
+	security testing and secure code review begins when a project begins and runs continuously
+	throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
+	
+	\item \textit{Trend and History}
+	CI enables a higher management layer to view the history and trend of issues and builds.
 	
 \end{itemize}
 
 
-\subsection{Types of Analyzers}
-There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
+\subsection{Candidates to manage Static Code Analysis}
+\label{subsec:candidates-to-manage-static-code-analysis}
+We decided for the following tools, as possible candidates to manage static code analysis on software projects.
 
-\subsection{Jenkins}
-\todo[inline]{Introduce Jenkins and explain what it is...}
 
+\subsubsection{Eclipse}
+\label{subsubsec:eclipse}
+
+
+\subsubsection{Jenkins}
+\label{subsubsec:jenkins}
 Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes.\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}
 
-\subsection{SonarQube}
-\todo[inline]{Introduce SonarQube and explain what it is...}
+\subsubsection{Teamcity}
+\label{subsubsec:teamcity}
+
+
+
+\subsubsection{SonarQube}
+\label{subsubsec:sonarqube}
+SonarQube is an OpenSource project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
+Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks for several security issues (e.g. from the OWSASP Top 10 list).
+Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
+The main difference to CI tools, is the feature to manage the found issues.
+Over plugins it is possible to extend the analysis scope to over 20 programming languages.
+
+
+\subsubsection{Codeclimate}
+\label{subsubsec:codeclimate}
+
+
 
 \section{Input validation in popular frameworks}
 \label{sec:input_validation}
@@ -145,15 +193,27 @@ Jenkins is a widely used tool to control and manage continuous integration tasks
 Check those \url{http://codegeekz.com/20-best-php-frameworks-developers-august-2014/} and make a table how input validation is handled there...
 The most common security weakness in any application is the failure to properly validate input from the environment. This weakness further leads to almost all of the major vulnerabilities in applications, including buffer overflow, SQL injection and a whole lot more. So, the maximum essential cautious measure that developers can take is to comprehensively authenticate the input that a software obtains. Certainly programs need to accept input, and computing a decent result depends on having a good input. There is a misconception that input can be trusted just because it is coming from some so-called trusted source. Input must not enter into the system without passing through various security methods.
 
-\section{Static code analysis in Jenkins}
-\label{sec:static_code_analysis_jenkins}
+
+
+\section{Static code analysis in IDE}
+\label{sec:static_code_analysis_ide}
+
+\todo[inline]{Write about findbugs and pmd integration in eclipse, how, pro and con...}
+
+
+
+\section{Static code analysis in CI}
+\label{sec:static_code_analysis_ci}
+
+\subsection{Jenkins}
+\label{subsec:jenkins}
 Used test suite: wireshark 1.8 from NIST testsuites with 85 vulnerabilities.
 Because its C, because its one of the most security critical languages and there are many good analyzers for C.
 Why not Juliet TestSuite with 65 000 vulnerabilities?
 Because they are collections of testcases and not a easily build-able project and the analysis and build process would take to long to evaluate the reporting features of the analyzers.
 
+\todo[inline]{Table with Jenkins Analyzer Plugins (below) with pros and cons}
 
-Todo: Table with tools with pros and cons
 
 \begin{figure}[!t]
 	\centering
@@ -163,8 +223,33 @@ Todo: Table with tools with pros and cons
 \end{figure}
 
 
-\section{Static code analysis in SonarQube}
-\label{sec:static_code_analysis_sonarqube}
+\subsection{Teamcity}
+\label{subsec:static_code_analysis_teamcity}
+\begin{itemize}
+	\item Installation: The Teamcity installation was a bit easier than Sonarqube because the database connection was configured in a wizard and similar it consists out of a webserver with webinterface (localhost:8111) and a database.
+	
+	\item Language support: All (since it is a highly customizable CI tool)
+	
+	\item Rule Management: The analyzers have to run externally and Teamcity will import the analysis results.
+	Hence, it is much effort to configure and install different analyzers with different rulesets.
+	
+	\item Issue-Presentation: In the build details you can show issues in the Code Inspection tab, what present just the xml tree of the parsed reports, no filter options, no resolve options, no severity levels.
+	
+	\item Positive: Better user interface than Jenkins. With installed IDE plugin, you can jump to issue source-code directly in the IDE. 
+	
+	\item Negative: Hard to configure the external pmd and findbugs reports. Visualization of issues very limited. Two different inspections can not be processed during one build (skipped PMD report)
+	
+\end{itemize}
+
+
+
+
+
+\section{Static code analysis in code quality management}
+\label{sec:static_code_analysis_code_quality_management}
+
+\subsection{SonarQube}
+\label{subsec:sonarqube}
 \begin{itemize}
 \item Installation: Sonarqube consists out of 3 parts: the local webserver (localhost:9000), a database to load and store analysis results and the sonarqube runner, which analyses the code specified in a project property file.
 
@@ -185,36 +270,61 @@ We subdivide our evaluations by programming language because the analyzers and t
 
 \input{chapter_c}
 
-\section{Static code analysis in Teamcity}
-\label{sec:static_code_analysis_teamcity}
-\begin{itemize}
-\item Installation: The Teamcity installation was a bit easier than Sonarqube because the database connection was configured in a wizard and similar it consists out of a webserver with webinterface (localhost:8111) and a database.
 
-\item Language support: All (since it is a highly customizable CI tool)
+\subsection{Codeclimate}
+\label{subsec:codeclimate}
 
-\item Rule Management: The analyzers have to run externally and Teamcity will import the analysis results.
-Hence, it is much effort to configure and install different analyzers with different rulesets.
-
-\item Issue-Presentation: In the build details you can show issues in the Code Inspection tab, what present just the xml tree of the parsed reports, no filter options, no resolve options, no severity levels.
-
-\item Positive: Better user interface than Jenkins. With installed IDE plugin, you can jump to issue source-code directly in the IDE. 
-
-\item Negative: Hard to configure the external pmd and findbugs reports. Visualization of issues very limited. Two different inspections can not be processed during one build (skipped PMD report)
- 
-\end{itemize}
 
 
 \section{Evaluation of reporting capabilities}
 \label{sec:evaluation}
-Definition for userfriendly vulnerability reporting needed!
-Metrics for evaluation of reports needed and need to be mapped on the useabillity definition. 
+We decided to make a qualitative evaluation, with usability inspection heuristics described in the book Information Visualization by Kerren et al. \cite{InformationVisualizationBook}.
+From the work of Hollingsed et al. on 15 years of usability inspection evaluation \cite{15yearsUsabilityEvaluation}, we derived the best method would be a combination of a cognitive walk-through, combined with the usability heuristic evaluation defined by Nielsen \cite{Nielsen:UsabilityInspectionMethods}.
+This wide-used, informal, very cost efficient and effective method is proven to find with a appropriate skilled evaluator team 55 - 90\% of all usability problems.
+
+
+The usability inspection over heuristic evaluation method uses a small group of usability experts, who evaluate a
+user interface using a set of guidelines and noting the severity of
+each usability problem and where it exists. 
+We combine it with a cognitive walk-though, in the way, that three experts go through the tools with a cognitive expected path in context of applying static code analysis with an additional usability guidelines list for every stage.
+
+
+We identified four stages of our walk-through and evaluate several usability guidelines in each stage:
+
+\begin{itemize}
+	\item Prepare analysis
+	\begin{itemize}
+		\item Is the tool easy and intuitive to configure?
+		\item Is it possible to add external analyzers?
+		\item Is it possible to configure the analyzers?
+	\end{itemize}
+	\item Run analysis
+	\begin{itemize}
+		\item ...
+	\end{itemize}
+	\item Evaluate analysis results
+	\item Manage analysis results
+\end{itemize}
+
+
+\subsection{Eclipse}
+\label{subsec:evaluation_eclipse}
 
 \subsection{Jenkins}
-\label{sec:evaluation_jenkins}
+\label{subsec:evaluation_jenkins}
+
+\subsection{Teamcity}
+\label{subsec:evaluation_teamcity}
 
 \subsection{SonarQube}
-\label{sec:evaluation_sonarqube}
+\label{subsec:evaluation_sonarqube}
 
+\subsection{Codeclimate}
+\label{subsec:evaluation_codeclimate}
+
+
+\subsection{Comparation}
+\label{subsec:comparation}
 
 
 
@@ -224,7 +334,7 @@ Metrics for evaluation of reports needed and need to be mapped on the useabillit
 	\item Conclusion about how input validation is done in frameworks, what can be better ...
 	\item Conclusion, is it better to integrate static analysis in Jenkins or just use SonarQube
 	....its really not that easy to find the right static code analyzer for your project with a specific programming language. There are lots of open source tools, but very old and just supported by Jenkins over hacks.
-	\item Conclusion, is reporting in Jenkins useable
+	\item Conclusion, is reporting in Jenkins useable? No...just in combination with code quality management tools
 	\item Future work: Using many tools is basically a good idea, because more tools find potentially more vulnerabilities. A future approach would be to implement a tool that can filter all the generated reports. Thereby duplicate vulnerabilities findings can be merged and false positives can be reduced.
 \end{itemize}
 
