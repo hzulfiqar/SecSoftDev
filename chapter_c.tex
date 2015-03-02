@@ -1,19 +1,34 @@
 \section{C/C++}
 
 \subsection{Cppcheck}
-\textit{Cppcheck} is a very powerful analyzer for C and C++ which can find a lot different code issues. For example it tries to find out-of-bounds accesses, memory leaks or warn if obsolete or unsafe functions are used. Its main goal is to avoid false positives.
+Cppcheck is a very powerful analyzer for C and C++ which can find a lot different code issues, for instance out-of-bounds accesses, memory leaks or warn if obsolete or unsafe functions are used. Its main goal is to avoid false positives.
 
 Cppcheck is easy to use and can be integrated in an continuous life cycle with very little effort.
-Listing \ref{lst:cppcheck} shows how to run a Cppcheck analysis on C/C++ project. When you use this command, Cppcheck will run with 4 threads (\texttt{-j 4}), does all analysis it supports (\texttt{--enable=all}) and writes the results as xml file on disk after it examined any C/C++ file in the current folder and any folder below that (recursively).
+Listing \ref{lst:cppcheck} shows how to run a Cppcheck analysis on a C/C++ project. When Cppcheck is started using this command, it will run with 4 threads (\texttt{-j 4}), performs all analysis it supports (\texttt{--enable=all}) and writes the results as xml file on disk after it examined any C/C++ file in the current folder and any folder below that (recursively).
 
 \begin{lstlisting}[caption={Bash command to run Cppcheck},label={lst:cppcheck}]
 $ cppcheck -j 4 --enable=all \
-	--xml --xml-version=2 . \
-	2> cppcheck.xml
+	--xml --xml-version=2 \
+	. 2> cppcheck.xml
 \end{lstlisting}
 
 
 \subsubsection{Cppcheck \& Jenkins}
-There exists a dedicated \href{https://wiki.jenkins-ci.org/display/JENKINS/Cppcheck+Plugin}{Jenkins plugin for Cppcheck}. This plugin does not include the Cppcheck analysis. This has to be performed as a build step which produces a XML-file containing the analysis results. The plugin will then, as a post-build task, read the XML-file and display the contents in a processed manner.
+There is a dedicated \href{https://wiki.jenkins-ci.org/display/JENKINS/Cppcheck+Plugin}{Jenkins plugin for Cppcheck}. This plugin does not include the Cppcheck analysis nor does it issue a check. A run has to be issued as a build step which produces a XML-file containing the analysis results. The plugin will then, as a post-build task, read the XML-file and display the contents in a processed manner.
 
 \subsubsection{Cppcheck \& SonarQube}
+There are two plugins to integrate C/C++ static code analysis into SonarQube. There is a professional plugin released by SonarSource which is the company behind SonarQube. This plugin includes some analysis and coding rules but can also display the results of third party analyzers like Cppcheck. Since you can only use this plugin if you have a valid license, we could not try it on our own but there is a public demonstration site showing the analysis results for \href{http://nemo.sonarqube.org/dashboard/index/clang}{clang} and \href{http://nemo.sonarqube.org/dashboard/index/mysql}{MySQL}. 
+
+The second plugin is sonar-cxx which is a community plugin, hence it is open source and free to use.
+
+\subsection{RATS}
+RATS (Rough Auditing Tool for Security) is a static code analyzer specialized to security related programming errors.
+
+\begin{lstlisting}[caption={Bash command to run RATS},label={lst:rats}]
+$ rats -w 3 --xml . > report.xml
+\end{lstlisting}
+
+\subsubsection{RATS \& Jenkins}
+Unfortunately, we did not find a plugin to display RATS results with Jenkins.
+
+\subsubsection{RATS \& SonarQube}
