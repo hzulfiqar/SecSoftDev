@@ -49,7 +49,7 @@
 \begin{document}
 %
 % paper title
-\title{Integration of Static Security Code Analysis\\in Continuous Integration Lifecycles}
+\title{Integration of Static Code Analysis\\in Continuous Integration Lifecycles}
 
 
 
@@ -103,11 +103,6 @@ Static code analysis should run frequently in an continuous integration lifecycl
 
 \section{Introduction}
 % no \IEEEPARstart
-\todo[inline]{Content from our slides...about input validation and how static code analysis works.}
-\cite{SecurityinCI}
-
-\todo{Explain PMD, FindBugs, cppcheck, RATs, maybe FlowDroid}
-
 Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}.
 
 
@@ -118,11 +113,11 @@ Another possibility is the combination of those tools in a continuous integratio
 Besides CI, IDE and the development tool chain can be extended with code quality management systems, as platform for analyze the code and manage the analyzed issues.
 
 
-In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), two code quality management tools (SonarQube, Codeclimate) and the IDE Eclipse.
+In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), a code quality management tools (SonarQube) and the IDE Eclipse.
 We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnotetext{http://www.jedit.org/}) with a variety of issues.
 
 
-We address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
+%We address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
 
 
 
@@ -130,52 +125,54 @@ We address that what needs validation, how to perform input validation and how t
 
 \todo[inline]{Outline with section numbers (explain the structure of the paper)}
 
+\section{Static code analysis}
+
+\todo[inline]{definition static code analysis}
+
+\todo[inline]{weakness classes}
+
+\todo[inline]{difference between source and binary analysis}
 
 \subsection{Types of Analyzers}
 There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
+
+
+\subsubsection{Lexical Analysis}
+\label{subsec:lex_analysis}
+\todo[inline]{explain it...AST...}
+\todo[inline]{explain rats}
+
+
+\subsubsection{Dataflow Analysis}
+\label{subsec:dataflow_analysis}
+\todo[inline]{explain it with all steps and strcutures}
+
+
+\paragraph{Intra-Procedural Analysis}
+\todo[inline]{explain it, also explain findbugs, pmd and cppcheck as examples}
+
+\paragraph{Inter-Procedural Analysis}
+\todo[inline]{ explain it with structures and flowdroid as example}
 
 
 Furthermore it is important to distinguish when to apply analyzers in the Software Development Lifecycle.
 Most analyzer exist as stand-alone version and allow the integration in common development tools, like IDE's and CI tools.
 Another promising approach is the integration in Software configuration systems (SCM) or in external code quality management tools, which enable professional issue management activities.
 
-%TODO Definition for ci
-
-Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
-\begin{itemize}
-	\item[+] \textit{Immediate Notification}
-	CI ensures that ongoing changes to the source code do not break the intent or design of the software. If a change does break the software, that break is identified immediately and can be fixed with a minimal cost and impact to the projects schedule.
-	\item[+] \textit{Automated Testing and Deploying}
-	CI enables many automation possibilities. The most useful automation area is testing in form of Unit- and Integration-Testing, to find problems after component integration and change introduced bugs in previously working components. 
-	Finally a correct configured CI system can automate the deployment of software releases. 
-	\item[+] \textit{Secure Development}
-	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
-	security testing and secure code review begins when a project begins and runs continuously
-	throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
-
-	\item[+] \textit{Changing Testing Economics}
-	Using CI for build, test, and analysis automation has increased the depth and breadth of tests while also making them faster and less expensive. By making it cheap and easy to perform tests, teams are encouraged to test more and test sooner in the development cycle, reducing the cost of fixing bugs.
-	
-	\item[+] \textit{Trend and History}
-	CI enables a higher management layer to view the history and trend of issues and builds.
-	
-	\item[-] \textit{CI Configuration}
-	The configuration of a CI instance can be very troublesome and involves the understanding of many different tools. To create a working tool chain of testing, analyzing and building, with many thresholds and parameters the developer team has to understand every tool and have to tune parameters after gaining more experience.
-\end{itemize}
-
-%TODO definition code quality management and advantages 
 
 
-\section{Input validation in popular frameworks}
-\label{sec:input_validation}
-\todo{Move this section to the end? - Brian}
-Check those \url{http://codegeekz.com/20-best-php-frameworks-developers-august-2014/} and make a table how input validation is handled there...
-The most common security weakness in any application is the failure to properly validate input from the environment. This weakness further leads to almost all of the major vulnerabilities in applications, including buffer overflow, SQL injection and a whole lot more. So, the maximum essential cautious measure that developers can take is to comprehensively authenticate the input that a software obtains. Certainly programs need to accept input, and computing a decent result depends on having a good input. There is a misconception that input can be trusted just because it is coming from some so-called trusted source. Input must not enter into the system without passing through various security methods.
+
+%\section{Input validation in popular frameworks}
+%\label{sec:input_validation}
+%\todo{Move this section to the end? - Brian}
+%Check those \url{http://codegeekz.com/20-best-php-frameworks-developers-august-2014/} and make a table how input validation is handled there...
+%The most common security weakness in any application is the failure to properly validate input from the environment. This weakness further leads to almost all of the major vulnerabilities in applications, including buffer overflow, SQL injection and a whole lot more. So, the maximum essential cautious measure that developers can take is to comprehensively authenticate the input that a software obtains. Certainly programs need to accept input, and computing a decent result depends on having a good input. There is a misconception that input can be trusted just because it is coming from some so-called trusted source. Input must not enter into the system without passing through various security methods.
 
 
 
 \section{Static code analysis in IDE}
 \label{sec:static_code_analysis_ide}
+\todo[inline]{define IDE}
 Static code analysis on IDE level is a common choice for many projects.
 It is easy to integrate common analyzers like PMD and FindBugs in IDE's like like Eclipse, Netbeans or IntelliJ.
 Advantages of integrating static code analysis in IDE's:
@@ -202,8 +199,31 @@ We could integrate our test analyzers PMD and FindBugs as plugins.
 
 \section{Static code analysis in CI}
 \label{sec:static_code_analysis_ci}
-Continuous integration tools run independently Unit Tests and other jobs over remote repository code.
-Hence, they should be the perfect place to apply static code analysis.
+Continuous integration (CI) firstly proposed by Grady Booch \cite{CI-Definition:Booch:1993}, is the software engineering practice, of continuously merging all developer working copies with a shared release master branch several times a day.
+
+Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
+\begin{itemize}
+	\item[+] \textit{Immediate Notification}
+	CI ensures that ongoing changes to the source code do not break the intent or design of the software. If a change does break the software, that break is identified immediately and can be fixed with a minimal cost and impact to the projects schedule.
+	\item[+] \textit{Automated Testing and Deploying}
+	CI enables many automation possibilities. The most useful automation area is testing in form of Unit- and Integration-Testing, to find problems after component integration and change introduced bugs in previously working components. 
+	Finally a correct configured CI system can automate the deployment of software releases. 
+	\item[+] \textit{Secure Development}
+	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
+	security testing and secure code review begins when a project begins and runs continuously
+	throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
+	
+	\item[+] \textit{Changing Testing Economics}
+	Using CI for build, test, and analysis automation has increased the depth and breadth of tests while also making them faster and less expensive. By making it cheap and easy to perform tests, teams are encouraged to test more and test sooner in the development cycle, reducing the cost of fixing bugs.
+	
+	\item[+] \textit{Trend and History}
+	CI enables a higher management layer to view the history and trend of issues and builds.
+	
+	\item[-] \textit{CI Configuration}
+	The configuration of a CI instance can be very troublesome and involves the understanding of many different tools. To create a working tool chain of testing, analyzing and building, with many thresholds and parameters the developer team has to understand every tool and have to tune parameters after gaining more experience.
+\end{itemize}
+
+
 
 \subsection{Jenkins}
 \label{subsec:jenkins}
@@ -216,12 +236,12 @@ But not all plugins provide a full analyzer.
 Especially plugins for commercial tools like Coverity just provide a link to a corresponding web platform for code quality and issue management. 
 
 
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=1\linewidth]{img/jenkins-code-analysis-plugins.png}
-	\caption{Just a few used Jenkins plugins for static code analysis}
-	\label{fig:jenkins-plugins}
-\end{figure}
+%\begin{figure}[!t]
+%	\centering
+%	\includegraphics[width=1\linewidth]{img/jenkins-code-analysis-plugins.png}
+%	\caption{Just a few used Jenkins plugins for static code analysis}
+%	\label{fig:jenkins-plugins}
+%\end{figure}
 
 
 \subsection{Teamcity}
@@ -251,8 +271,12 @@ Furthermore it works together with static code analyzers in the commercial Intel
 
 
 
-\section{Static code analysis in code quality management}
+\section{Static code analysis in Code Quality Management}
 \label{sec:static_code_analysis_code_quality_management}
+Code quality management (CQM) is the practice of monitoring and control the quality of code with different metrics and activities.
+Static code analysis is a method of gaining measurements for CQM, therefore are tools for CQM good candidates for integration of static code analysis.
+
+\todo[inline]{quality management advantages and disadvantages}
 
 \subsection{SonarQube}
 \label{subsec:sonarqube}
@@ -279,23 +303,14 @@ In the menu issues and issue-drilldown one can sort the issue list, search for i
  
 \end{itemize}
 
-\subsection{Codeclimate}
-\label{subsec:codeclimate}
-\todo[inline]{Maybe we leave codeclimate out....its commercial...and would maybe be too much work to include it in our evaluation...to make it round we would have to include then also another IDE...too much work?}
 
 
 
 
 
+%We subdivide our evaluations by programming language because the analyzers and their main purpose differs heavily in respect to their target language.
 
-
-
-
-
-
-We subdivide our evaluations by programming language because the analyzers and their main purpose differs heavily in respect to their target language.
-
-\input{chapter_c}
+%\input{chapter_c}
 
 
 
@@ -330,7 +345,6 @@ We identified four stages of our walk-through and evaluate several usability gui
 	\begin{itemize}
 		\item Is it easy and intuitive to start the analysis?
 		\item Is it possible to following the analysis progress?
-		\item Is it possible to 
 	\end{itemize}
 	\item Evaluate analysis results
 	\begin{itemize}
@@ -363,39 +377,24 @@ We identified four stages of our walk-through and evaluate several usability gui
 \subsection{SonarQube}
 \label{subsec:evaluation_sonarqube}
 
-\subsection{Codeclimate}
-\label{subsec:evaluation_codeclimate}
-
 
 \subsection{Comparation}
 \label{subsec:comparation}
-
+\todo[inline]{Add matrix of evaluation question results}
 
 
 \section{Conclusion}
 \label{sec:conclusion}
 \begin{itemize}
-	\item Conclusion about how input validation is done in frameworks, what can be better ...
-	\item Conclusion, is it better to integrate static analysis in Jenkins or just use SonarQube
-	....its really not that easy to find the right static code analyzer for your project with a specific programming language. There are lots of open source tools, but very old and just supported by Jenkins over hacks.
-	\item Conclusion, is reporting in Jenkins useable? No...just in combination with code quality management tools
+	%\item Conclusion about how input validation is done in frameworks, what can be better ...
+	\item Its really not that easy to find the right static code analyzer for your project with a specific programming language. There are lots of open source tools, but very old and just supported by Jenkins over hacks.
+	\item static code analyzer need to be customized to find special problems (like Java Vulnerabilities)
+	\item Is it better to integrate static analysis in Jenkins or in IDE or in Code Quality Management tools?
+	\item Is reporting in Jenkins useable? No...just in combination with code quality management tools like SonarQube, Coverity, ... and the analysis in those tools can be triggered in CI tools, but it is much effort to configure.
 	\item Future work: Using many tools is basically a good idea, because more tools find potentially more vulnerabilities. A future approach would be to implement a tool that can filter all the generated reports. Thereby duplicate vulnerabilities findings can be merged and false positives can be reduced.
 \end{itemize}
 
 
-
-
-
-
-\section{Sources and useful links}
-\begin{itemize}
-	\item \href{http://www.crosstalkonline.org/storage/issue-archives/2010/201003/201003-Stiehm.pdf}{Building Security In Using Continuous Integration}
-	\item \href{http://www.jetbrains.com/teamcity}{TeamCity}\\
-	Supports static code analysis. Also, it can import analysis reports produced by these tools: PMD, PMD/CPD, FindBugs, Checkstyle or JSLint.
-	\item \href{http://jenkins-ci.org}{Jenkins}
-	\item \href{http://continuum.apache.org}{Apache Continuum}	
-	\item \href{http://codeclimate.com}{codeclimate.com}
-\end{itemize}
 
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
