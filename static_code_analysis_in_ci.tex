@@ -46,7 +46,6 @@
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
-
 \begin{document}
 %
 % paper title
@@ -105,15 +104,29 @@ Static code analysis should run frequently in an continuous integration lifecycl
 \section{Introduction}
 % no \IEEEPARstart
 \todo[inline]{Content from our slides...about input validation and how static code analysis works.
-Limitation on open source, static analysis tools. Jenkins, SonarQube...and why\cite{IEEEexample:bluebookarticle}.
+Limitation on open source, static analysis tools. Jenkins, SonarQube...and why.
 Content of our paper, what comes when blabla...}
+\cite{SecurityinCI}
 
-
+Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}.
 
 We evaluate the vulnerability reporting capabilities in Jenkins and the open source quality management tool SonarQube.
 We used the popular CI tool Jenkins on a NIST standardized C test project\footnote{\url{http://samate.nist.gov/SRD/testsuite.php}} with a variety of vulnerabilities.
 Thereby we included a couple of static analysis tools in Jenkins for finding bugs and vulnerabilities during build and after the build process.
 we address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
+
+Advantages of Continuous Integration (CI)\cite{SecurityinCI}:
+\begin{itemize}
+	\item \textit{Immediate Notification}
+	CI ensures that ongoing changes to the source code do not break the intent or design of the software. If a change does break the software, that break is identified immediately and can be fixed with a minimal cost and impact to the projects schedule.
+	
+	\item \textit{Secure Development}
+	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
+security testing and secure code review begins when a project begins and runs continuously
+throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
+	
+\end{itemize}
+
 
 \subsection{Types of Analyzers}
 There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
@@ -230,13 +243,9 @@ Metrics for evaluation of reports needed and need to be mapped on the useabillit
 	\item \href{http://codeclimate.com}{codeclimate.com}
 \end{itemize}
 
-
-
-
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-\bibliography{./references}
-
+\bibliography{references}
 
 \end{document}
 
