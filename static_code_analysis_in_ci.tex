@@ -103,10 +103,10 @@ Static code analysis should run frequently in an continuous integration lifecycl
 
 \section{Introduction}
 % no \IEEEPARstart
-\todo[inline]{Content from our slides...about input validation and how static code analysis works.
-Limitation on open source, static analysis tools. Jenkins, SonarQube...and why.
-Content of our paper, what comes when blabla...}
+\todo[inline]{Content from our slides...about input validation and how static code analysis works.}
 \cite{SecurityinCI}
+
+\todo{Explain PMD, FindBugs, cppcheck, RATs, maybe FlowDroid}
 
 Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}.
 
@@ -137,57 +137,33 @@ There are different types of analyzers which all have a different scope. Most of
 
 Furthermore it is important to distinguish when to apply analyzers in the Software Development Lifecycle.
 Most analyzer exist as stand-alone version and allow the integration in common development tools, like IDE's and CI tools.
+Another promising approach is the integration in Software configuration systems (SCM) or in external code quality management tools, which enable professional issue management activities.
 
+%TODO Definition for ci
 
-Advantages of Continuous Integration (CI)\cite{SecurityinCI}:
+Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 \begin{itemize}
-	\item \textit{Immediate Notification}
+	\item[+] \textit{Immediate Notification}
 	CI ensures that ongoing changes to the source code do not break the intent or design of the software. If a change does break the software, that break is identified immediately and can be fixed with a minimal cost and impact to the projects schedule.
-	
-	\item \textit{Secure Development}
+	\item[+] \textit{Automated Testing and Deploying}
+	CI enables many automation possibilities. The most useful automation area is testing in form of Unit- and Integration-Testing, to find problems after component integration and change introduced bugs in previously working components. 
+	Finally a correct configured CI system can automate the deployment of software releases. 
+	\item[+] \textit{Secure Development}
 	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
 	security testing and secure code review begins when a project begins and runs continuously
 	throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
 
-	\item \textit{Changing Testing Economics}
+	\item[+] \textit{Changing Testing Economics}
 	Using CI for build, test, and analysis automation has increased the depth and breadth of tests while also making them faster and less expensive. By making it cheap and easy to perform tests, teams are encouraged to test more and test sooner in the development cycle, reducing the cost of fixing bugs.
 	
-	\item \textit{Trend and History}
+	\item[+] \textit{Trend and History}
 	CI enables a higher management layer to view the history and trend of issues and builds.
 	
+	\item[-] \textit{CI Configuration}
+	The configuration of a CI instance can be very troublesome and involves the understanding of many different tools. To create a working tool chain of testing, analyzing and building, with many thresholds and parameters the developer team has to understand every tool and have to tune parameters after gaining more experience.
 \end{itemize}
 
-
-\subsection{Candidates to manage Static Code Analysis}
-\label{subsec:candidates-to-manage-static-code-analysis}
-We decided for the following tools, as possible candidates to manage static code analysis on software projects.
-
-
-\subsubsection{Eclipse}
-\label{subsubsec:eclipse}
-
-
-\subsubsection{Jenkins}
-\label{subsubsec:jenkins}
-Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes.\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}
-
-\subsubsection{Teamcity}
-\label{subsubsec:teamcity}
-
-
-
-\subsubsection{SonarQube}
-\label{subsubsec:sonarqube}
-SonarQube is an OpenSource project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
-Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks for several security issues (e.g. from the OWSASP Top 10 list).
-Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
-The main difference to CI tools, is the feature to manage the found issues.
-Over plugins it is possible to extend the analysis scope to over 20 programming languages.
-
-
-\subsubsection{Codeclimate}
-\label{subsubsec:codeclimate}
-
+%TODO definition code quality management and advantages 
 
 
 \section{Input validation in popular frameworks}
@@ -200,22 +176,44 @@ The most common security weakness in any application is the failure to properly 
 
 \section{Static code analysis in IDE}
 \label{sec:static_code_analysis_ide}
+Static code analysis on IDE level is a common choice for many projects.
+It is easy to integrate common analyzers like PMD and FindBugs in IDE's like like Eclipse, Netbeans or IntelliJ.
+Advantages of integrating static code analysis in IDE's:
+\begin{itemize}
+	\item Live feedback during programming
+	\item Easy mapping of issues to code
+	\item possibility to fix issues early and instantly
+	\item interactive education for developers
+\end{itemize}
 
-\todo[inline]{Write about findbugs and pmd integration in eclipse, how, pro and con...}
+However disadvantages arise with bigger projects. 
+Analyzers, especially data flow analyzers, tend to scale for big projects not very well. 
+There is no central way to configure the analyzer rules, to improve the results and performance.
+Many developer tend to suppress warnings from such analyzers, since they produce a lot of false positives.
+Hence, it is desired to have a central and independent analyzer, which can run on the remote repository code.
+
+
+As example IDE we used the popular OpenSource IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
+Beside its popularity we decided for Eclipse, because it is platform independent and highly extensible.
+We could integrate our test analyzers PMD and FindBugs as plugins.
+
 
 
 
 \section{Static code analysis in CI}
 \label{sec:static_code_analysis_ci}
+Continuous integration tools run independently Unit Tests and other jobs over remote repository code.
+Hence, they should be the perfect place to apply static code analysis.
 
 \subsection{Jenkins}
 \label{subsec:jenkins}
-Used test suite: wireshark 1.8 from NIST testsuites with 85 vulnerabilities.
-Because its C, because its one of the most security critical languages and there are many good analyzers for C.
-Why not Juliet TestSuite with 65 000 vulnerabilities?
-Because they are collections of testcases and not a easily build-able project and the analysis and build process would take to long to evaluate the reporting features of the analyzers.
-
-\todo[inline]{Table with Jenkins Analyzer Plugins (below) with pros and cons}
+Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes.\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}
+We decided for Jenkins because it is OpenSource, highly extensible and the most popular CI tool.
+Beside PMD and FindBugs, there are many more static analyzer available in the plugin repository.
+In our research we found, almost every analyzer has a Jenkins plugin available.
+Many OpenSource analyzers, like BrakeMan\footnote{\href{http://brakemanscanner.org/}{http://brakemanscanner.org/}}, Cppcheck\footnote{\href{http://cppcheck.sourceforge.net/}{http://cppcheck.sourceforge.net/}} as well as popular commercial tools like Coverity\footnote{\href{http://www.coverity.com/}{http://www.coverity.com/}} and Fortify\footnote{\href{http://www8.hp.com/de/de/software-solutions/application-security/}{http://www8.hp.com/de/de/software-solutions/application-security/}}.
+But not all plugins provide a full analyzer.
+Especially plugins for commercial tools like Coverity just provide a link to a corresponding web platform for code quality and issue management. 
 
 
 \begin{figure}[!t]
@@ -228,6 +226,11 @@ Because they are collections of testcases and not a easily build-able project an
 
 \subsection{Teamcity}
 \label{subsec:static_code_analysis_teamcity}
+Teamcity is like Jenkins a web application for continuous integration, from the company Jetbrains\footnote{\href{https://www.jetbrains.com/teamcity/}{https://www.jetbrains.com/teamcity/}}. In contrast to Jenkins, it is not open source, but free available with a limitation of 20 build configurations.
+Also it claims to be easier to use and to configure than Jenkins.
+It provides possibilities to run analyzers before or after the build process and to inspect resulting reports.
+Furthermore it works together with static code analyzers in the commercial IntelliJ\footnote{\href{https://www.jetbrains.com/idea/}{https://www.jetbrains.com/idea/}} IDE from Jetbrains.
+
 \begin{itemize}
 	\item Installation: The Teamcity installation was a bit easier than Sonarqube because the database connection was configured in a wizard and similar it consists out of a webserver with webinterface (localhost:8111) and a database.
 	
@@ -253,6 +256,13 @@ Because they are collections of testcases and not a easily build-able project an
 
 \subsection{SonarQube}
 \label{subsec:sonarqube}
+SonarQube\footnote{\href{http://www.sonarqube.org/}{http://www.sonarqube.org/}} is an OpenSource project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
+Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks for several security issues (e.g. from the OWSASP Top 10 list).
+Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
+The main difference to CI tools, is the feature to manage the found issues.
+Over plugins it is possible to extend the analysis scope to over 20 programming languages.
+
+
 \begin{itemize}
 \item Installation: Sonarqube consists out of 3 parts: the local webserver (localhost:9000), a database to load and store analysis results and the sonarqube runner, which analyses the code specified in a project property file.
 
@@ -269,17 +279,30 @@ In the menu issues and issue-drilldown one can sort the issue list, search for i
  
 \end{itemize}
 
+\subsection{Codeclimate}
+\label{subsec:codeclimate}
+\todo[inline]{Maybe we leave codeclimate out....its commercial...and would maybe be too much work to include it in our evaluation...to make it round we would have to include then also another IDE...too much work?}
+
+
+
+
+
+
+
+
+
+
+
 We subdivide our evaluations by programming language because the analyzers and their main purpose differs heavily in respect to their target language.
 
 \input{chapter_c}
 
 
-\subsection{Codeclimate}
-\label{subsec:codeclimate}
 
 
 
-\section{Evaluation of reporting capabilities}
+
+\section{Evaluation}
 \label{sec:evaluation}
 We decided to make a qualitative evaluation, with usability inspection heuristics described in the book Information Visualization by Kerren et al. \cite{InformationVisualizationBook}.
 From the work of Hollingsed et al. on 15 years of usability inspection evaluation \cite{15yearsUsabilityEvaluation}, we derived the best method would be a combination of a cognitive walk-through, combined with the usability heuristic evaluation defined by Nielsen \cite{Nielsen:UsabilityInspectionMethods}.
@@ -324,6 +347,8 @@ We identified four stages of our walk-through and evaluate several usability gui
 		\item Is is possible to edit issue status? (Resolved, False positive, ...)
 	\end{itemize}
 \end{itemize}
+
+
 
 
 \subsection{Eclipse}
