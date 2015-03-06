@@ -108,7 +108,7 @@ Building secure software systems gets more and more important. Not just private 
 
 Therefore we have to improve the software development process in terms of early and continuous security analysis of the source code.
 Such static analysis tools can be applied independently during the development process at different stages.
-One option would be the integration of analyzers within the IDE of the developer.
+One option would be the integration of analyzers into the Integrated Development Environment (IDE) of the developer.
 Another possibility is the combination of those tools in a continuous integration system, to collect issues during or after the build process.
 Besides CI, IDE and the development tool chain can be extended with code quality management systems, as platform for analyze the code and manage the analyzed issues.
 
@@ -139,24 +139,28 @@ There are different types of analyzers which all have a different scope. Most of
 
 \subsubsection{Lexical Analysis}
 \label{subsec:lex_analysis}
+\
 \todo[inline]{explain it...AST...}
 \todo[inline]{explain rats}
 
 
 \subsubsection{Dataflow Analysis}
 \label{subsec:dataflow_analysis}
+\
 \todo[inline]{explain it with all steps and strcutures}
 
 
 \paragraph{Intra-Procedural Analysis}
+\
 \todo[inline]{explain it, also explain findbugs, pmd and cppcheck as examples}
 
 \paragraph{Inter-Procedural Analysis}
+\
 \todo[inline]{ explain it with structures and flowdroid as example}
 
 
-Furthermore it is important to distinguish when to apply analyzers in the Software Development Lifecycle.
-Most analyzer exist as stand-alone version and allow the integration in common development tools, like IDE's and CI tools.
+Furthermore, it is important to distinguish when to apply analyzers in a Software Development Lifecycle.
+Most analyzer exist as stand-alone version and allow the integration in common development tools, like IDE's and CI systems.
 Another promising approach is the integration in Software configuration systems (SCM) or in external code quality management tools, which enable professional issue management activities.
 
 
@@ -172,29 +176,27 @@ Another promising approach is the integration in Software configuration systems 
 
 \section{Static code analysis in IDE}
 \label{sec:static_code_analysis_ide}
+It is straightforward to integrate common analyzers like PMD and FindBugs in an Integrated Development Environment (IDE) like like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
+
 \todo[inline]{define IDE}
-Static code analysis on IDE level is a common choice for many projects.
-It is easy to integrate common analyzers like PMD and FindBugs in IDE's like like Eclipse, Netbeans or IntelliJ.
-Advantages of integrating static code analysis in IDE's:
+Static code analysis on IDE level is a common choice for many projects. Since the compile does many static analysis, it is effectively integrated into any IDE that can start the compile process and interprets that compilers output.
+
+Advantages of integrating additional static code analyzers in IDE's:
 \begin{itemize}
 	\item Live feedback during programming
 	\item Easy mapping of issues to code
-	\item possibility to fix issues early and instantly
-	\item interactive education for developers
+	\item Possibility to fix issues early and instantly
+	\item Interactive education for developers
+	\item Extensibility thorough project specific rules
 \end{itemize}
 
-However disadvantages arise with bigger projects. 
-Analyzers, especially data flow analyzers, tend to scale for big projects not very well. 
+However disadvantages arise in bigger projects. Analyzers, especially data flow analyzers, tend to not to scale for big projects. 
 There is no central way to configure the analyzer rules, to improve the results and performance.
 Many developer tend to suppress warnings from such analyzers, since they produce a lot of false positives.
-Hence, it is desired to have a central and independent analyzer, which can run on the remote repository code.
+Hence, it is desired to have a central and independent analyzer, which can run on the remote repository code regularly and with predefined settings.
 
-
-As example IDE we used the popular OpenSource IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
-Beside its popularity we decided for Eclipse, because it is platform independent and highly extensible.
-We could integrate our test analyzers PMD and FindBugs as plugins.
-
-
+In this papaer. we used the popular open source IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
+We decided for Eclipse because it is platform independent and highly extensible. Furthermore, we could integrate our test analyzers PMD and FindBugs into Eclipse. Therefore, the results are comparable with the other platforms we evaluated.
 
 
 \section{Static code analysis in CI}
@@ -227,7 +229,7 @@ Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 
 \subsection{Jenkins}
 \label{subsec:jenkins}
-Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes.\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}
+Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}.
 We decided for Jenkins because it is OpenSource, highly extensible and the most popular CI tool.
 Beside PMD and FindBugs, there are many more static analyzer available in the plugin repository.
 In our research we found, almost every analyzer has a Jenkins plugin available.
@@ -380,15 +382,14 @@ We identified four stages of our walk-through and evaluate several usability gui
 
 \subsection{Comparison}
 \label{subsec:comparation}
-\todo[inline]{description to the matrix results}
 
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=0.9\linewidth]{img/comparation}
-	\caption{Comparison of the usability and features of the evaluated tool}
-	\label{fig:comparison}
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{comparation}
+	\caption{Comparison Matrix.}
+	\label{fig:comparison_matrix}
 \end{figure}
 
+\todo[inline]{description to the matrix results}
 
 \section{Conclusion}
 \label{sec:conclusion}
