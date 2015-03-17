@@ -49,7 +49,7 @@
 \begin{document}
 %
 % paper title
-\title{Integration of Static Code Analysis\\in Continuous Integration Lifecycles}
+\title{An Evaluation of Open Source Static Code Analysis Reporting in Context of Continuous Integration Tools}
 
 
 
@@ -89,8 +89,7 @@
 
 
 \begin{abstract}
-\boldmath
-Static code analysis should run frequently in an continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reworked, concentrated and presented in a helpful manner.
+Static code analysis should run frequently in an continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reported in a clear and meaningful fashion. Additionally, results might be combined, reworked, concentrated or filtered.
 \end{abstract}
 
 % no keywords
@@ -114,6 +113,7 @@ Besides CI, IDE and the development tool chain can be extended with code quality
 
 
 In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), a code quality management tools (SonarQube) and the IDE Eclipse.
+
 We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnotetext{http://www.jedit.org/}) with a variety of issues.
 
 
