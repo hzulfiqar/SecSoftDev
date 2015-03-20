@@ -89,7 +89,7 @@
 
 
 \begin{abstract}
-Static code analysis should run frequently in an continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reported in a clear and meaningful fashion. Additionally, results might be combined, reworked, concentrated or filtered.
+Static code analysis should run frequently in an continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reported in a clear and meaningful fashion. Additionally, results might be combined, reworked, concentrated or filtered. We use only open source tools that a freely available and examine how they work together and what their results look like.
 \end{abstract}
 
 % no keywords
@@ -102,7 +102,7 @@ Static code analysis should run frequently in an continuous integration lifecycl
 
 \section{Introduction}
 % no \IEEEPARstart
-Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}.
+Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}. To do so, they need some kind of vulnerability to attack. Since writing vulnerability-free software is hard, tools are welcome to support and maintain software quality on an ongoing basis. Static code analyzers can fulfill this task.
 
 
 Therefore we have to improve the software development process in terms of early and continuous security analysis of the source code.
@@ -113,27 +113,23 @@ Besides CI, IDE and the development tool chain can be extended with code quality
 
 
 In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), a code quality management tools (SonarQube) and the IDE Eclipse.
-
 We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnotetext{http://www.jedit.org/}) with a variety of issues.
-
-
-%We address that what needs validation, how to perform input validation and how to respond when an input fails an authentication check. Furthermore, we analysed how input validation is deployed in popular PHP frameworks.
-
-
-
 
 
 \todo[inline]{Outline with section numbers (explain the structure of the paper)}
 
-\section{Static code analysis}
 
+
+
+\section{Static code analysis}
+\subsection{Overview}
 \todo[inline]{definition static code analysis}
 
 \todo[inline]{weakness classes}
 
 \todo[inline]{difference between source and binary analysis}
 
-\subsection{Types of Analyzers}
+\subsection{Foundations and Classification}
 There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
 
 
@@ -275,6 +271,9 @@ Furthermore it works together with static code analyzers in the commercial Intel
 
 \section{Static code analysis in Code Quality Management}
 \label{sec:static_code_analysis_code_quality_management}
+
+\todo[inline]{Lofti: CQM although interesting, it is related to a different problem, unless you describe the connection to CI well.}
+
 Code quality management (CQM) is the practice of monitoring and control the quality of code with different metrics and activities.
 Static code analysis is a method of gaining measurements for CQM, therefore are tools for CQM good candidates for integration of static code analysis.
 
@@ -384,7 +383,7 @@ We identified four stages of our walk-through and evaluate several usability gui
 \label{subsec:comparation}
 
 \begin{figure}[h]
-	\includegraphics[width=\columnwidth]{comparation}
+	\includegraphics[width=\columnwidth]{img/comparation}
 	\caption{Comparison Matrix.}
 	\label{fig:comparison_matrix}
 \end{figure}
