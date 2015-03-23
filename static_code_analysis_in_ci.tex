@@ -105,7 +105,7 @@ Static code analysis should run frequently in an continuous integration lifecycl
 Building secure software systems gets more and more important. Not just private hackers are attacking our software, also foreign and even western governments put in great effort in breaking into important systems\cite{NSAHacking}. To do so, they need some kind of vulnerability to attack. Since writing vulnerability-free software is hard, tools are welcome to support and maintain software quality on an ongoing basis. Static code analyzers can fulfill this task.
 
 
-\todo[inline]{Introduce CI here}
+Continuous integration is a software development philosophy. The key idea is the entire software product is tested, built and measured after each commit. ``In essence, Continuous Integration is about reducing risk by providing faster feedback. First and foremost, it is designed to help identify and fix integration and regression issues faster, resulting in smoother, quicker delivery, and fewer bugs.''\cite{Jenkins:Smart:2011} Furthermore, one can think of additional tasks that can monitor software quality regularly. By doing so, it is possible to notice common problems or a degradation of code quality as soon as possible. This is a huge opportunity to reduce risk on a permanent basis.
 
 
 Therefore we have to improve the software development process in terms of early and continuous security analysis of the source code.
@@ -177,14 +177,17 @@ Another promising approach is the integration in Software configuration systems 
 \label{sec:static_code_analysis_ide}
 It is straightforward to integrate common analyzers like PMD and FindBugs in an Integrated Development Environment (IDE) like like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
 
-\todo[inline]{define IDE}
+With IDE (Integrated development environment), we mean a program ``that provides comprehensive facilities to computer programmers for software development. An IDE normally consists of a source code editor, build automation tools and a debugger.''\footnote{From Wikipedia: \href{http://en.wikipedia.org/wiki/Integrated_development_environment}{Integrated development environment}}
+The IDE is usually the program that programmers use to develop new code, review code or fix bugs and issues. Since the programmer is used to navigate through the source using its IDE, it would be very helpful to enrich this environment by additional information. In contrast, reviewing analysis results in an independent and specialized program or website, code formatting and navigation can differ dramatically. Also, when it comes to fixing an issue, already being in the IDE means, a programmer can just make its changes instead of switching programs and locating the corresponding code location.
+
 Static code analysis on IDE level is a common choice for many projects. Since the compile does many static analysis, it is effectively integrated into any IDE that can start the compile process and interprets that compilers output.
 
-Advantages of integrating additional static code analyzers in IDE's:
+Advantages of integrating additional static code analyzers in IDEs:
 \begin{itemize}
 	\item Live feedback during programming
 	\item Easy mapping of issues to code
 	\item Possibility to fix issues early and instantly
+	\item Reviewing and editing of source in one environment
 	\item Interactive education for developers
 	\item Extensibility thorough project specific rules
 \end{itemize}
@@ -226,10 +229,28 @@ Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 
 
 
+\subsection{Levels of Integration}
+Depending on how continuous integration is accomplished in a given process management, static code analysis can be performed at different \textit{locations}, times and with different automation and reporting levels. According to \cite[p. 6ff]{Jenkins:Smart:2011}, there are \textit{7 phases} of applying continuous integration to a specific development. For this overview, only 3 phases apply: \textit{Phase 1} there is no common build server, \textit{Phase 2} there is build server but builds run on a fixed (nightly) schedule and \textit{Phase 7} builds and tests (including analysis, measures) are issued as changes are committed.
+
+\begin{itemize}
+	\item[1] \textit{No Build Server} \\
+	When no common build server exists, code analysis can only be applied on each developer's local machine. No developer is obliged to run the static code analysis before committing his changes nor will anybody be notified if code quality was decreased or new issues were introduced.
+	
+	
+	\item[2] \textit{Nightly Builds} \\
+	The build server could also run static code analysis and quality measures at each build and publish the results. Even notifications are possible, although they would not be accurately addressed since the system does not know which commit introduced the issue and can therefore not just notify the appropriate author.
+	
+	\item[3] \textit{Continuous Integration Environment} \\
+	The server runs all test, analysis and code measures at each commit, publishes the results and notifies the appropriate developer when the build failed or new issues were introduced through his change.
+\end{itemize}
+
+
+
 \subsection{Jenkins}
 \label{subsec:jenkins}
 Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}.
-We decided for Jenkins because it is OpenSource, highly extensible and the most popular CI tool.
+
+We decided for Jenkins because it is OpenSource, highly extensible and the most popular CI tool. To be exact, there are more than 1000 freely available plugins that can be installed by just one click using the Jenkins web interface.
 Beside PMD and FindBugs, there are many more static analyzer available in the plugin repository.
 In our research we found, almost every analyzer has a Jenkins plugin available.
 Many OpenSource analyzers, like BrakeMan\footnote{\href{http://brakemanscanner.org/}{http://brakemanscanner.org/}}, Cppcheck\footnote{\href{http://cppcheck.sourceforge.net/}{http://cppcheck.sourceforge.net/}} as well as popular commercial tools like Coverity\footnote{\href{http://www.coverity.com/}{http://www.coverity.com/}} and Fortify\footnote{\href{http://www8.hp.com/de/de/software-solutions/application-security/}{http://www8.hp.com/de/de/software-solutions/application-security/}}.
@@ -336,36 +357,44 @@ We combine it with a cognitive walk-though, in the way, that three experts go th
 
 We identified four stages of our walk-through and evaluate several usability guidelines in each stage:
 
+
+\subsection{Prepare analysis}
+\begin{description}
+	\item[Is the tool easy and intuitive to configure?] \hfill \\
+	
+\end{description}
+
 \begin{itemize}
-	\item Prepare analysis
-	\begin{itemize}
-		\item Is the tool easy and intuitive to configure?
-		\item Is it possible to add external analyzers?
-		\item Is it possible to configure the analyzers?
-		\item Is it possible to view the rules?
-		\item Is it possible to choose, add, edit, delete rules?
-	\end{itemize}
-	\item Run analysis
-	\begin{itemize}
-		\item Is it easy and intuitive to start the analysis?
-		\item Is it possible to following the analysis progress?
-	\end{itemize}
-	\item Evaluate analysis results
-	\begin{itemize}
-		\item Is there an issue overview with severity levels?
-		\item Is it possible to view an issue trend/history?
-		\item Is there a mapping from issue to source code position?
-		\item Is there a description for every issue?
-		\item Is the issue description easy to understand with solution suggestions?
-		\item Is there a possibility to filter issues? (severity, category, tag, ...)
-	\end{itemize}
-	\item Manage analysis results
-	\begin{itemize}
-		\item Is it possible to assign issues to developers?
-		\item Is is possible to edit issue status? (Resolved, False positive, ...)
-	\end{itemize}
+	\item Is it possible to add external analyzers?
+	\item Is it possible to configure the analyzers?
+	\item Is it possible to view the rules?
+	\item Is it possible to choose, add, edit, delete rules?
 \end{itemize}
 
+
+\subsection{Run analysis}
+\begin{itemize}
+	\item Is it easy and intuitive to start the analysis?
+	\item Is it possible to following the analysis progress?
+\end{itemize}
+
+
+\subsection{Evaluate analysis results}
+\begin{itemize}
+	\item Is there an issue overview with severity levels?
+	\item Is it possible to view an issue trend/history?
+	\item Is there a mapping from issue to source code position?
+	\item Is there a description for every issue?
+	\item Is the issue description easy to understand with solution suggestions?
+	\item Is there a possibility to filter issues? (severity, category, tag, ...)
+\end{itemize}
+
+
+\subsection{Manage analysis results}
+\begin{itemize}
+	\item Is it possible to assign issues to developers?
+	\item Is is possible to edit issue status? (Resolved, False positive, ...)
+\end{itemize}
 
 
 
@@ -392,7 +421,7 @@ We identified four stages of our walk-through and evaluate several usability gui
 	\label{fig:comparison_matrix}
 \end{figure}
 
-\todo[inline]{description to the matrix results}
+\todo[inline]{Describe the final analysis results (matrix)}
 
 \section{Conclusion}
 \label{sec:conclusion}
