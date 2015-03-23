@@ -298,14 +298,14 @@ Furthermore it works together with static code analyzers in the commercial Intel
 
 \todo[inline]{Lofti: CQM although interesting, it is related to a different problem, unless you describe the connection to CI well.}
 
-Code quality management (CQM) is the practice of monitoring and controling the quality of code with different metrics and activities.
+Code quality management (CQM) is the practice of monitoring and controlling the quality of code with different metrics and activities.
 Static code analysis is a method of gaining measurements that can be used for CQM. Therefore, CQM tools can benefit at lot by a integration of static code analysis into a common build system.
 
 \todo[inline]{quality management advantages and disadvantages}
 
 \subsection{SonarQube}
 \label{subsec:sonarqube}
-SonarQube\footnote{\href{http://www.sonarqube.org/}{http://www.sonarqube.org/}} is an OpenSource project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
+SonarQube\footnote{\href{http://www.sonarqube.org/}{http://www.sonarqube.org/}} is an open source project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
 Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks for several security issues (e.g. from the OWSASP Top 10 list).
 Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
 The main difference to CI tools, is the feature to manage the found issues.
@@ -313,7 +313,7 @@ Over plugins it is possible to extend the analysis scope to over 20 programming 
 
 
 \begin{itemize}
-\item Installation: Sonarqube consists out of 3 parts: the local webserver (localhost:9000), a database to load and store analysis results and the sonarqube runner, which analyses the code specified in a project property file.
+\item Installation: SonarQube consists out of 3 parts: the local webserver (localhost:9000), a database to load and store analysis results and the sonarqube runner, which analyses the code specified in a project property file.
 
 \item Language support: Java and other languages available as plugins
 
@@ -359,41 +359,39 @@ We identified four stages of our walk-through and evaluate several usability gui
 
 
 \subsection{Prepare analysis}
-\begin{description}
-	\item[Is the tool easy and intuitive to configure?] \hfill \\
-	
-\end{description}
-
 \begin{itemize}
-	\item Is it possible to add external analyzers?
-	\item Is it possible to configure the analyzers?
-	\item Is it possible to view the rules?
-	\item Is it possible to choose, add, edit, delete rules?
+	\item \textit{Is the tool easy and intuitive to configure?} \\
+	In this category, we appraise how complicated it was, to set the continuous integration environment up and create a test project with our test source.
+	
+	\item \textit{Is it possible to add external analyzers?} \\
+	\item \textit{Is it possible to configure the analyzers?} \\
+	\item \textit{Is it possible to view the rules?} \\
+	\item \textit{Is it possible to choose, add, edit, delete rules?} \\
 \end{itemize}
 
 
 \subsection{Run analysis}
 \begin{itemize}
-	\item Is it easy and intuitive to start the analysis?
-	\item Is it possible to following the analysis progress?
+	\item Is it easy and intuitive to start the analysis? \\
+	\item Is it possible to following the analysis progress? \\
 \end{itemize}
 
 
 \subsection{Evaluate analysis results}
 \begin{itemize}
-	\item Is there an issue overview with severity levels?
-	\item Is it possible to view an issue trend/history?
-	\item Is there a mapping from issue to source code position?
-	\item Is there a description for every issue?
-	\item Is the issue description easy to understand with solution suggestions?
-	\item Is there a possibility to filter issues? (severity, category, tag, ...)
+	\item Is there an issue overview with severity levels? \\
+	\item Is it possible to view an issue trend/history? \\
+	\item Is there a mapping from issue to source code position? \\
+	\item Is there a description for every issue? \\
+	\item Is the issue description easy to understand with solution suggestions? \\
+	\item Is there a possibility to filter issues? (severity, category, tag, ...) \\
 \end{itemize}
 
 
 \subsection{Manage analysis results}
 \begin{itemize}
-	\item Is it possible to assign issues to developers?
-	\item Is is possible to edit issue status? (Resolved, False positive, ...)
+	\item Is it possible to assign issues to developers? \\
+	\item Is is possible to edit issue status? (Resolved, False positive, ...) \\
 \end{itemize}
 
 
