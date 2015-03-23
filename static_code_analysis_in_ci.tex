@@ -364,7 +364,11 @@ We identified four stages of our walk-through and evaluate several usability gui
 	In this category, we appraise how complicated it was, to set the continuous integration environment up and create a test project with our test source.
 	
 	\item \textit{Is it possible to add external analyzers?} \\
+	This is a very useful feature, maybe even elementary. Not being able to add external analyzers means that only the included analyzers can be used.
+	
 	\item \textit{Is it possible to configure the analyzers?} \\
+	Configuring static code analyzers is mandatory. For example, there is a huge trade of between accuracy and speed. Accurate analysis can result in very high computational costs. Keep in mind that the anaysis is supposed to run for each commit. If an analyzer run takes hours, this would not be practical anymore.
+	
 	\item \textit{Is it possible to view the rules?} \\
 	\item \textit{Is it possible to choose, add, edit, delete rules?} \\
 \end{itemize}
@@ -412,12 +416,12 @@ We identified four stages of our walk-through and evaluate several usability gui
 \subsection{Comparison}
 \label{subsec:comparation}
 
-\newpage
-\begin{figure}[p!]
-	\includegraphics[angle=90]{img/comparation}
+\begin{figure*}[t]
+	\includegraphics[width=\textwidth]{img/comparation}
 	\caption{Comparison Matrix.}
 	\label{fig:comparison_matrix}
-\end{figure}
+\end{figure*}
+
 
 \todo[inline]{Describe the final analysis results (matrix)}
 
