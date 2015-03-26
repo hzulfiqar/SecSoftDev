@@ -370,32 +370,40 @@ We identified four stages of our walk-through and evaluate several usability gui
 	Configuring static code analyzers is mandatory. For example, there is a huge trade of between accuracy and speed. Accurate analysis can result in very high computational costs. Keep in mind that the anaysis is supposed to run for each commit. If an analyzer run takes hours, this would not be practical anymore.
 	
 	\item \textit{Is it possible to view the rules?} \\
+	This question targets the openness of the used static analysers. It can be very helpful to be able to view all supported rules if you want, for instance, check if a specific feature is checked or not. Additionally, viewing the rules can help to understand why an issue was reported and how the code can be improved.
+	
 	\item \textit{Is it possible to choose, add, edit, delete rules?} \\
+	This is related to the previous question, but goes a little further. Imaging you got ascertain that at specific flaw is not detected by a static code analyser. In case, the analyser supports the editing of the used ruleset, you can simply add a custom rule or edit an existing one.
+	
+	Choosing (selecting) only a subset of all existing rules can result in a faster analyser run which can come in very handy if frequent analyzis should be performed, e.g. at each commit and thereby multiple times a day.
 \end{itemize}
 
 
 \subsection{Run analysis}
 \begin{itemize}
-	\item Is it easy and intuitive to start the analysis? \\
-	\item Is it possible to following the analysis progress? \\
+	\item \textit{Is it easy and intuitive to start the analysis?} \\
+	How much effort is required to manually start an analysis? Is this even possible or are only automated analysis supported? Furthermore, starting an anylsis can be easy as a click on a website or hard like a manuell invokation of a specific command on the source code folder on some server.
+	
+	\item \textit{Is it possible to following the analysis progress?} \\
+	This can be useful if an anylsis takes some time and the process cannot be determinded in a different way. Also, the analyser output can be helpful for debugging purposes.
 \end{itemize}
 
 
 \subsection{Evaluate analysis results}
 \begin{itemize}
-	\item Is there an issue overview with severity levels? \\
-	\item Is it possible to view an issue trend/history? \\
-	\item Is there a mapping from issue to source code position? \\
-	\item Is there a description for every issue? \\
-	\item Is the issue description easy to understand with solution suggestions? \\
-	\item Is there a possibility to filter issues? (severity, category, tag, ...) \\
+	\item \textit{Is there an issue overview with severity levels?} \\
+	\item \textit{Is it possible to view an issue trend/history?} \\
+	\item \textit{Is there a mapping from issue to source code position?} \\
+	\item \textit{Is there a description for every issue?} \\
+	\item \textit{Is the issue description easy to understand with solution suggestions?} \\
+	\item \textit{Is there a possibility to filter issues? (severity, category, tag, ...)} \\
 \end{itemize}
 
 
 \subsection{Manage analysis results}
 \begin{itemize}
-	\item Is it possible to assign issues to developers? \\
-	\item Is is possible to edit issue status? (Resolved, False positive, ...) \\
+	\item \textit{Is it possible to assign issues to developers?} \\
+	\item \textit{Is is possible to edit issue status? (Resolved, False positive, ...)} \\
 \end{itemize}
 
 
@@ -405,6 +413,10 @@ We identified four stages of our walk-through and evaluate several usability gui
 
 \subsection{Jenkins}
 \label{subsec:evaluation_jenkins}
+Jenkins itself has no static code analysis included but a major feature of Jenkins is its extensibility. Including a code analysis step in a build process is simple as adding a \textit{build step}. The analysers configuration can be passed by command line options or via a configuration file, depending on the used analyser.
+
+Result visualization is done by free plugins. In general, the analyser creates a result file that is written to a specific location. After the build is done, the relevant plugins check the project root for those result files and parse their content. Therefore, the way the results are shown depends largely on the quality of the used plugin.
+
 
 \subsection{Teamcity}
 \label{subsec:evaluation_teamcity}
