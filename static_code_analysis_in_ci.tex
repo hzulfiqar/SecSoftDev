@@ -413,9 +413,6 @@ We identified four stages of our walk-through and evaluate several usability gui
 
 \subsection{Jenkins}
 \label{subsec:evaluation_jenkins}
-Jenkins itself has no static code analysis included but a major feature of Jenkins is its extensibility. Including a code analysis step in a build process is simple as adding a \textit{build step}. The analyzers configuration can be passed by command line options or via a configuration file, depending on the used analyzer. How well an analyzer can be configured or if the ruleset can be modified depends not on Jenkins but only on the analyzer. We can, therefore, make no statement about this.
-
-Visualization of analysis results is done by free plugins only. In general, the analyzer creates a result file that is written to a specific location. After the build is done, the relevant plugins check the project root for those result files and parse their content. Therefore, the way the results are shown depends largely on the quality of the used plugin. Nevertheless, one common static code analyzis plugin exists\footnote{\href{https://wiki.jenkins-ci.org/display/JENKINS/Static+Code+Analysis+Plug-ins}{Jenkins: Static Code Analysis Plug-ins}}, that is able to collect the results of multiple plugins and create a common overview over all results, see figure \ref{fig:jenkins-dashboard}. Again, the quality of this visualizations depends hardly on the quality of the available plugins for a specific analyzer. We observed a good support and an ordinary visualization quality but these information is only founded on samples.
 
 \begin{figure}[t]
 	\centering
@@ -423,6 +420,14 @@ Visualization of analysis results is done by free plugins only. In general, the 
 	\caption{Jenkins Dashboard using the common ``Static Code Analysis Plug-ins'' plugin that combines the results of multiple analyzers.}
 	\label{fig:jenkins-dashboard}
 \end{figure}
+
+Jenkins itself has no static code analysis included but a major feature of Jenkins is its extensibility. Including a code analysis step in a build process is simple as adding a \textit{build step}. The analyzers configuration can be passed by command line options or via a configuration file, depending on the used analyzer. How well an analyzer can be configured or if the ruleset can be modified depends not on Jenkins but only on the analyzer. We can, therefore, make no statement about this.
+
+Starting an analysis in Jenkins is easy as pressing the respective button in the web interface. The process can be watched live in a self-reloading page that prints all console output that is made by all build steps. Since static code analysis is just a build step in Jenkins, the output of the analyzers is visible there too.
+
+Visualization of analysis results is done by free plugins only. In general, the analyzer creates a result file that is written to a specific location. After the build is done, the relevant plugins check the project root for those result files and parse their content. Therefore, the way the results are shown depends largely on the quality of the used plugin. Nevertheless, one common static code analyzis plugin exists\footnote{\href{https://wiki.jenkins-ci.org/display/JENKINS/Static+Code+Analysis+Plug-ins}{Jenkins: Static Code Analysis Plug-ins}}, that is able to collect the results of multiple plugins and create a common overview over all results, see figure \ref{fig:jenkins-dashboard}. Again, the quality of this visualizations depends hardly on the quality of the available plugins for a specific analyzer. We observed a good support and an ordinary visualization quality but these information is only founded on samples.
+
+
 
 
 \subsection{Teamcity}
