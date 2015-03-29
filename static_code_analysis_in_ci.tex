@@ -322,33 +322,29 @@ Also it claims to be easier to use and configure than Jenkins.
 It provides possibilities to run analyzers before or after the build process and to inspect resulting reports.
 Furthermore it works together with static code analyzers in the commercial IntelliJ\footnote{\href{https://www.jetbrains.com/idea/}{https://www.jetbrains.com/idea/}} IDE from Jetbrains.
 
-\begin{itemize}
-	\item Installation: The Teamcity installation was a bit easier than Sonarqube because the database connection was configured in a wizard and similar it consists out of a webserver with webinterface (localhost:8111) and a database.
-	
-	\item Language support: All (since it is a highly customizable CI tool)
-	
-	\item Rule Management: The analyzers have to run externally and Teamcity will import the analysis results.
-	Hence, it is much effort to configure and install different analyzers with different rulesets.
-	
-	\item Issue-Presentation: In the build details you can show issues in the Code Inspection tab, what present just the xml tree of the parsed reports, no filter options, no resolve options, no severity levels.
-	
-	\item Positive: Better user interface than Jenkins. With installed IDE plugin, you can jump to issue source-code directly in the IDE. 
-	
-	\item Negative: Hard to configure the external pmd and findbugs reports. Visualization of issues very limited. Two different inspections can not be processed during one build (skipped PMD report)
-	
-\end{itemize}
-
 
 
 \section{Static code analysis in Code Quality Management}
 \label{sec:static_code_analysis_code_quality_management}
-\
-\todo[inline]{Lofti: CQM although interesting, it is related to a different problem, unless you describe the connection to CI well.}
 
-Code quality management (CQM) is the practice of monitoring and controlling the quality of code with different metrics and activities.
+Code Quality Management (CQM) is the practice of monitoring and controlling the quality of code with different metrics and activities.
 Static code analysis is a method of gaining measurements that can be used for CQM. Therefore, CQM tools can benefit at lot by a integration of static code analysis into a common build system.
-\
-\todo[inline]{quality management advantages and disadvantages}
+
+
+Advantages and disadvantages of Code Quality Management systems:
+\begin{itemize}
+	\item[+] Advanced issue management capabilities
+	\item[+] Easy integration of additional analyzers
+	\item[+] Advanced issue visualization
+	\item[-] Unintuitive source code provisioning
+	\item[-] Increased management overhead for developer
+	\item[-] Training for users necessary 
+\end{itemize}
+
+Coverity and Fortify, as cloud services, provide beside commercial, sophisticated static code analysis, advanced issue management features and can be seen already as Code Quality Management tools.
+Furthermore, CQM and CI systems can work together, even though there are not many approaches to accomplish this yet. 
+Anyway, it is possible to start the analysis in CQM systems continuously over a configuration in a CI tool.
+SonarQube is an example for a typical, external Code Quality Management system to run several analyzers with different rules on source code.
 
 \subsection{SonarQube}
 \label{subsec:sonarqube}
@@ -357,23 +353,7 @@ Besides analysis against common coding guidelines, like duplicate code, missing 
 Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
 The main difference to CI tools, is the feature to manage the found issues.
 Over plugins it is possible to extend the analysis scope to over 20 programming languages.
-
-
-\begin{itemize}
-\item Installation: SonarQube consists out of 3 parts: the local webserver (localhost:9000), a database to load and store analysis results and the sonarqube runner, which analyses the code specified in a project property file.
-
-\item Language support: Java and other languages available as plugins
-
-\item Rule Management: Very intuitive and easy to configure rules for so called quality profiles. Very interesting, that you can manage the rules of all analyzer plugins in one menu. It comes already with default sonarqube rules with different severity levels, detailed descriptions in different categories. Also including security relevant rules e.g. from OWASPTop10 and CWEs. One can compose a static analysis out of those rules including rules from plugins like FindBugs and PMD.
-
-\item Issue-Presentation: Dashboard as starting point presents overview very well with different informative metrics, mostly for code quality and presents the number of issues of the different severity levels.
-In the menu issues and issue-drilldown one can sort the issue list, search for issues matching to specific rules and get more information to the issue and most important where the issue is located in the code.
-
-\item Positive: Good overview over issues, fast analysis, good rule management, good issue management with assigning issues to users etc.
-
-\item Negative: In Rule-Management one can filter rules by tags and categories (bugs, security bugs), but you can not use those filters in the issue management. This leads to a big list of issues where you cant distinguish e.g. between a unused code and security issue.
- 
-\end{itemize}
+Finally it is even possible to start a SonarQube Analysis over Jenkins with the corresponding Jenkins plugin.
 
 
 
@@ -396,49 +376,65 @@ We identified four stages of our walk-through and evaluate several usability gui
 \subsection{Prepare analysis}
 \begin{itemize}
 	\item \textit{Is the tool easy and intuitive to configure?} \\
-	In this category, we appraise how complicated it was, to set the continuous integration environment up and create a test project with our test source.
+	In this question, we appraise how complicated it was, to set the continuous integration environment up and create a test project with our test source.
 	
 	\item \textit{Is it possible to add external analyzers?} \\
 	This is a very useful feature, maybe even elementary. Not being able to add external analyzers means that only the included analyzers can be used.
 	
 	\item \textit{Is it possible to configure the analyzers?} \\
-	Configuring static code analyzers is mandatory. For example, there is a huge trade of between accuracy and speed. Accurate analysis can result in very high computational costs. Keep in mind that the anaysis is supposed to run for each commit. If an analyzer run takes hours, this would not be practical anymore.
+	Configuring static code analyzers is mandatory. For example, there is a huge trade of between accuracy and speed. Accurate analysis can result in very high computational costs. Keep in mind that the analysis is supposed to run for each commit. If an analyzer run takes hours, this would not be practical anymore.
 	
 	\item \textit{Is it possible to view the rules?} \\
 	This question targets the openness of the used static analysers. It can be very helpful to be able to view all supported rules if you want, for instance, check if a specific feature is checked or not. Additionally, viewing the rules can help to understand why an issue was reported and how the code can be improved.
 	
 	\item \textit{Is it possible to choose, add, edit, delete rules?} \\
-	This is related to the previous question, but goes a little further. Imaging you got ascertain that at specific flaw is not detected by a static code analyser. In case, the analyser supports the editing of the used ruleset, you can simply add a custom rule or edit an existing one.
+	This is related to the previous question, but goes a little further. Imaging you got ascertain that at specific flaw is not detected by a static code analyzer. In case, the analyzer supports the editing of the used ruleset, you can simply add a custom rule or edit an existing one.
 	
-	Choosing (selecting) only a subset of all existing rules can result in a faster analyser run which can come in very handy if frequent analyzis should be performed, e.g. at each commit and thereby multiple times a day.
+	Choosing (selecting) only a subset of all existing rules can result in a faster analyzer run which can come in very handy if frequent analysis should be performed, e.g. at each commit and thereby multiple times a day.
 \end{itemize}
 
 
 \subsection{Run analysis}
 \begin{itemize}
 	\item \textit{Is it easy and intuitive to start the analysis?} \\
-	How much effort is required to manually start an analysis? Is this even possible or are only automated analysis supported? Furthermore, starting an anylsis can be easy as a click on a website or hard like a manuell invokation of a specific command on the source code folder on some server.
+	How much effort is required to manually start an analysis? Is this even possible or are only automated analyses supported? Furthermore, starting an analysis can be easy as a click on a website or hard like a manual invocation of a specific command on the source code folder on some server.
 	
 	\item \textit{Is it possible to following the analysis progress?} \\
-	This can be useful if an anylsis takes some time and the process cannot be determinded in a different way. Also, the analyser output can be helpful for debugging purposes.
+	This can be useful if an analysis takes some time and the process cannot be determined in a different way. Also, the analyzer output can be helpful for debugging purposes.
 \end{itemize}
 
 
 \subsection{Evaluate analysis results}
 \begin{itemize}
 	\item \textit{Is there an issue overview with severity levels?} \\
+	An overview over the the amount of issues of different severity classes is the best starting point for bigger projects to investigate the impediments and code problems of the project.
+	
 	\item \textit{Is it possible to view an issue trend/history?} \\
+	Especially for bigger projects it is important for the management to get a visual history about the change of code quality, the risks and amount of security problems in the project, to take mitigation actions, like coding guideline trainings, etc. soon enough, to keep the code secure and robust.	
+	
 	\item \textit{Is there a mapping from issue to source code position?} \\
+	Perhaps one of the most important features of an analyzer is the mapping of an issue, to a concrete row and column in the code.
+	This helps the developer to find and identify the problem and makes it much easier to resolve the issue.
+	
 	\item \textit{Is there a description for every issue?} \\
+	The description of the issue, optimally with examples, is also very important, if the developer has no awareness of the problem.
+	It helps to understand the issue and serves as educational helper, to avoid the same issue in the future.
+	
 	\item \textit{Is the issue description easy to understand with solution suggestions?} \\
+	Corresponding to the question before, a description can also contain possible solutions to the issue, that might be helpful to resolve the problem faster.
+	
 	\item \textit{Is there a possibility to filter issues? (severity, category, tag, ...)} \\
+	For Projects with many issues it is important to filter for the most important ones, to speed up code views, to find the most common issue categories and to prioritize issues.
 \end{itemize}
 
 
 \subsection{Manage analysis results}
 \begin{itemize}
 	\item \textit{Is it possible to assign issues to developers?} \\
+	Analysis results serve as input for code reviews. Such reviews need to get managed and scheduled and therefore an important feature is the possibility assign issues to developers.
+	
 	\item \textit{Is is possible to edit issue status? (Resolved, False positive, ...)} \\
+	Since many analyzers report false positives or duplicate issues, it is important to mark issues as resolved or false positives to prevent code review overheads.
 \end{itemize}
 
 
@@ -468,9 +464,40 @@ Visualization of analysis results is done by free plugins only. In general, the 
 \subsection{Teamcity}
 \label{subsec:evaluation_teamcity}
 
+\begin{itemize}
+	\item Installation: The Teamcity installation was a bit easier than Sonarqube because the database connection was configured in a wizard and similar it consists out of a webserver with webinterface (localhost:8111) and a database.
+	
+	\item Language support: All (since it is a highly customizable CI tool)
+	
+	\item Rule Management: The analyzers have to run externally and Teamcity will import the analysis results.
+	Hence, it is much effort to configure and install different analyzers with different rulesets.
+	
+	\item Issue-Presentation: In the build details you can show issues in the Code Inspection tab, what present just the xml tree of the parsed reports, no filter options, no resolve options, no severity levels.
+	
+	\item Positive: Better user interface than Jenkins. With installed IDE plugin, you can jump to issue source-code directly in the IDE. 
+	
+	\item Negative: Hard to configure the external pmd and findbugs reports. Visualization of issues very limited. Two different inspections can not be processed during one build (skipped PMD report)
+	
+\end{itemize}
+
 \subsection{SonarQube}
 \label{subsec:evaluation_sonarqube}
 
+\begin{itemize}
+	\item Installation: SonarQube consists out of 3 parts: the local webserver (localhost:9000), a database to load and store analysis results and the sonarqube runner, which analyses the code specified in a project property file.
+	
+	\item Language support: Java and other languages available as plugins
+	
+	\item Rule Management: Very intuitive and easy to configure rules for so called quality profiles. Very interesting, that you can manage the rules of all analyzer plugins in one menu. It comes already with default sonarqube rules with different severity levels, detailed descriptions in different categories. Also including security relevant rules e.g. from OWASPTop10 and CWEs. One can compose a static analysis out of those rules including rules from plugins like FindBugs and PMD.
+	
+	\item Issue-Presentation: Dashboard as starting point presents overview very well with different informative metrics, mostly for code quality and presents the number of issues of the different severity levels.
+	In the menu issues and issue-drilldown one can sort the issue list, search for issues matching to specific rules and get more information to the issue and most important where the issue is located in the code.
+	
+	\item Positive: Good overview over issues, fast analysis, good rule management, good issue management with assigning issues to users etc.
+	
+	\item Negative: In Rule-Management one can filter rules by tags and categories (bugs, security bugs), but you can not use those filters in the issue management. This leads to a big list of issues where you cant distinguish e.g. between a unused code and security issue.
+	
+\end{itemize}
 
 \subsection{Comparison}
 \label{subsec:comparation}
@@ -491,7 +518,7 @@ Visualization of analysis results is done by free plugins only. In general, the 
 	\item Its really not that easy to find the right static code analyzer for your project with a specific programming language. There are lots of open source tools, but very old and just supported by Jenkins over hacks.
 	\item static code analyzer need to be customized to find special problems (like Java Vulnerabilities)
 	\item Is it better to integrate static analysis in Jenkins or in IDE or in Code Quality Management tools?
-	\item Is reporting in Jenkins useable? No...just in combination with code quality management tools like SonarQube, Coverity, ... and the analysis in those tools can be triggered in CI tools, but it is much effort to configure.
+	\item Is reporting in Jenkins useable? No...just in combination with Code Quality Management tools like SonarQube, Coverity, ... and the analysis in those tools can be triggered in CI tools, but it is much effort to configure.
 	\item Future work: Using many tools is basically a good idea, because more tools find potentially more vulnerabilities. A future approach would be to implement a tool that can filter all the generated reports. Thereby duplicate vulnerabilities findings can be merged and false positives can be reduced.
 \end{itemize}
 
