@@ -112,11 +112,11 @@ Therefore we have to improve the software development process in terms of early 
 Such static analysis tools can be applied independently during the development process at different stages.
 One option would be the integration of analyzers into the Integrated Development Environment (IDE) of the developer.
 Another possibility is the combination of those tools in a continuous integration system, to collect issues during or after the build process.
-Besides CI, IDE and the development tool chain can be extended with code quality management systems, as platform for analyze the code and manage the analyzed issues.
+Besides CI and IDE the development tool chain can be extended with Code Quality Management systems, as platform for analyze the code and manage the analyzed issues.
 
 
-In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), a code quality management tools (SonarQube) and the IDE Eclipse.
-We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnotetext{http://www.jedit.org/}) with a variety of issues.
+In our paper, we compare and evaluate the issue reporting capabilities in two CI tools (Jenkins and Teamcity), a Code Quality Management tools (SonarQube) and the IDE Eclipse.
+We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnote{\href{http://www.jedit.org/}{JEdit: An open source text editor written in Java}}) with a variety of issues.
 
 
 \todo[inline]{Outline with section numbers (explain the structure of the paper)}
@@ -126,41 +126,90 @@ We integrated the popular analyzers FindBugs and PMD in each development tool ab
 
 \section{Static code analysis}
 \subsection{Overview}
-\todo[inline]{definition static code analysis}
+Static code or program analysis is an automated analysis performed on the static source code of a program without executing it \cite{Static_Code_Analysis_def}.
+It aims to enhance robustness and to find errors and all kind of programming mistakes early during the coding and testing phases, to reduce the effort of bugfixing after the release of the software.
 
-\todo[inline]{weakness classes}
 
-\todo[inline]{difference between source and binary analysis}
+Analyzer who execute the program and analyze the dynamic behavior on the binaries are called dynamic code analyzers.
+Those analyzers might be easier to implement, because they analyze the already loaded binaries and won't have to deal with complicated programming language features, like reflection and anonymous classes, but on the other hand, they are limited in their reporting capabilities.
+Modern approaches try to combine both or try to break down the source code in a simpler immediate representation.
+The analysis framework Soot\footnote{\href{https://sable.github.io/soot/}{Soot: A framework for analyzing and transforming Java and Android Applications}} for example transforms complicated Java code to a three-operator code, called Jimple and allows to implement analyzers on this easier representation.
+However, dynamic or hybrid code analyzers are out of scope for this work and not further mentioned.
+
+
+Especially for low-level programming languages like C, static code analysis became a crucial part of software development to find memory leaks and other coding mistakes.
+Hence, it is used automatically in compilers to find rough programming mistakes and most common security flaws.
+Anyway, detailed or special purpose security analyzers can't be part of a compiler, they need to be applied externally to keep development performance and with custom rules to decrease the number of false positive findings.
+
+Typical types of analyses are:
+\begin{itemize}
+	\item Type checking
+	\item Style/Code quality checking
+	\item Program/Property verification
+	\item Pointer, Buffer, file and memory checking
+	\item Control flow management
+	\item Initialization and shutdown
+\end{itemize}
+
+Increasing the precision (less false positive) and performance, as well as decreasing the recall (less false negatives) of analyzers is the prevailing goal of the research in this area and characterizes the quality of a static code analyzer.
+
 
 \subsection{Foundations and Classification}
-There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is \href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD} (Copy/Paste Detector) which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
+There are different types of analyzers which all have a different scope. Most of them are specialized to a specific programming language, but some are also capable of analyzing multiple languages. An example for a multi-language analyzer is CPD\footnote{\href{http://pmd.sourceforge.net/pmd-4.3.0/cpd.html}{CPD: Copy/Paste Detector}} which is supposed to find duplicate code. It works with Java, JSP, C, C++, Fortran and PHP code.
+
+
+On a very high level, all analyzers share an common way of performing a static analysis, as shown in figure \ref{fig:analysis}.
+They parse, tokenize and lex and the source code and build a context free grammar, just like a compiler does.
+Out of that, they build an abstract model, for example an Abstract Syntax Tree (AST).
+Finally, they use external rules and security knowledge to perform the analysis on the built model and display the results in a human readable way.
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=1\linewidth]{img/analysis.png}
+	\caption{Basic model of static code analysis \cite{Static_code_analysis_book_Chess:2007}}
+	\label{fig:analysis}
+\end{figure}
+
+It is possible to differentiate two different kinds of analyses, lexical and data flow analysis.
 
 
 \subsubsection{Lexical Analysis}
 \label{subsec:lex_analysis}
-\
-\todo[inline]{explain it...AST...}
-\todo[inline]{explain rats}
+The most analyzers do a form of lexical analysis.
+They build a model like an AST with symbol tables, analyze nodes against specific rules and use pattern matching to find anomalies and bugs.
+An early and easy example (2001) for such an analyzer is the Rough Auditing Tool for Security (RATS)\cite{Static_code_analysis_book_Chess:2007}, now acquired by the successful commercial tool Fortify\footnote{\href{http://www8.hp.com/de/de/software-solutions/application-security/}{Fortify: Static code analyzer by HP}}, that finds security and memory flaws in C source code, by doing a lexical analysis with XML-style rules, that contain already detailed descriptions of the corresponding problem.
 
 
 \subsubsection{Dataflow Analysis}
 \label{subsec:dataflow_analysis}
-\
-\todo[inline]{explain it with all steps and strcutures}
+A data flow analysis uses additional models, like a \textit{Data Flow}- and \textit{Control Flow Graph (CFG)}, to find potential vulnerabilities and anomalies, by tracking data from inputs/sources to a leak/sink.
+Typical analyses of that type are called Taint- or Live Variable Analysis.
+The easiest kind of such an analyzer operates only in a single function body (\textit{intra-procedural}).
+Depending on the desired goal, such an analysis can be \textit{flow-sensitive} (forward or top-down approach), to get control flow information about the past with more precision, or can be \textit{flow-insensitive} (backward or bottom-up approach), to get information about the future, but with less precision.
 
 
-\paragraph{Intra-Procedural Analysis}
-\
-\todo[inline]{explain it, also explain findbugs, pmd and cppcheck as examples}
-
-\paragraph{Inter-Procedural Analysis}
-\
-\todo[inline]{ explain it with structures and flowdroid as example}
+To extend the analysis scope to other functions, classes and packages (\textit{inter-procedural}), and automatically cover the different contexts (\textit{context-sensitivity}) of a whole program with variable aliases and other language features, additional models, like \textit{Call Graphs}, \textit{Point-To-Sets} and \textit{Inter-procedural Control Flow Graph's} are necessary.
+Examples for sophisticated inter-procedural analyzers are Coverity\footnote{\href{https://www.coverity.com}{Coverity: Commercial inter-procedural static code analyzer}} and FlowDroid\footnote{\href{http://sseblog.ec-spride.de/tools/flowdroid}{FlowDroid: Context-, flow-, field-, object-sensitive and lifecycle-aware static taint analysis tool for Android applications}} from Eric Bodden at the TU Darmstadt.
+With modern language features like reflection, virtual dispatch and multi-threading, static code analysis becomes more and more complex, hence the performance or precision decreases.
 
 
-Furthermore, it is important to distinguish when to apply analyzers in a Software Development Lifecycle.
-Most analyzer exist as stand-alone version and allow the integration in common development tools, like IDE's and CI systems.
-Another promising approach is the integration in Software configuration systems (SCM) or in external code quality management tools, which enable professional issue management activities.
+FindBugs and PMD implement a data flow analysis and they are the open source static analyzers we used later in our work for the evaluation.
+Hence, they are described now.
+
+\paragraph{PMD}
+is a source code analyzer for Java, JavaScript, XML and XSL to find common programming flaws like unused variables, empty catch blocks, unnecessary object creation, etc.
+It uses a set of rules, specified in a Java or XPath language, on an AST and control flow graph with data flow nodes to produce a report with rule violations in XML format.
+
+
+\paragraph{FindBugs}
+analyzes Java class files for programming defects and uses nearly 300 bug pattern with different categories (bad practice, correctness, etc.) and severity classes (high, medium and low)\cite{Findbugs}.
+Unlike PMD, it is possible to write custom detectors in Java as plugins to analyze java-bytecode or source code.
+The detectors use techniques like visitor patterns over class files, with state-machines to save types, stack-values, constants and other information and by traversing the control flow graph, to save conditional information.
+The FindBugs detectors are usually not inter-procedural, but do an additional global analysis to know variable scopes and subtype-relationships.
+
+
+Now it is important to distinguish when to apply analyzers in a Software Development Lifecycle.
+Most analyzer, like FindBugs and PMD, exist as stand-alone version and allow the integration in common development tools, like IDE's, CI systems or Code Quality Management systems.
 
 
 
@@ -177,7 +226,7 @@ Another promising approach is the integration in Software configuration systems 
 \label{sec:static_code_analysis_ide}
 It is straightforward to integrate common analyzers like PMD and FindBugs in an Integrated Development Environment (IDE) like like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
 
-With IDE (Integrated development environment), we mean a program ``that provides comprehensive facilities to computer programmers for software development. An IDE normally consists of a source code editor, build automation tools and a debugger.''\footnote{From Wikipedia: \href{http://en.wikipedia.org/wiki/Integrated_development_environment}{Integrated development environment}}
+With IDE (Integrated development environment), we mean a program ``that provides comprehensive facilities to computer programmers for software development. An IDE normally consists of a source code editor, build automation tools and a debugger.''\footnote{\href{http://en.wikipedia.org/wiki/Integrated_development_environment}{Integrated development environment}}
 The IDE is usually the program that programmers use to develop new code, review code or fix bugs and issues. Since the programmer is used to navigate through the source using its IDE, it would be very helpful to enrich this environment by additional information. In contrast, reviewing analysis results in an independent and specialized program or website, code formatting and navigation can differ dramatically. Also, when it comes to fixing an issue, already being in the IDE means, a programmer can just make its changes instead of switching programs and locating the corresponding code location.
 
 Static code analysis on IDE level is a common choice for many projects. Since the compile does many static analysis, it is effectively integrated into any IDE that can start the compile process and interprets that compilers output.
@@ -197,7 +246,7 @@ There is no central way to configure the analyzer rules, to improve the results 
 Many developer tend to suppress warnings from such analyzers, since they produce a lot of false positives.
 Hence, it is desired to have a central and independent analyzer, which can run on the remote repository code regularly and with predefined settings.
 
-In this papaer. we used the popular open source IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
+In this paper. we used the popular open source IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
 We decided for Eclipse because it is platform independent and highly extensible. Furthermore, we could integrate our test analyzers PMD and FindBugs into Eclipse. Therefore, the results are comparable with the other platforms we evaluated.
 
 
@@ -291,22 +340,20 @@ Furthermore it works together with static code analyzers in the commercial Intel
 
 
 
-
-
 \section{Static code analysis in Code Quality Management}
 \label{sec:static_code_analysis_code_quality_management}
-
+\
 \todo[inline]{Lofti: CQM although interesting, it is related to a different problem, unless you describe the connection to CI well.}
 
 Code quality management (CQM) is the practice of monitoring and controlling the quality of code with different metrics and activities.
 Static code analysis is a method of gaining measurements that can be used for CQM. Therefore, CQM tools can benefit at lot by a integration of static code analysis into a common build system.
-
+\
 \todo[inline]{quality management advantages and disadvantages}
 
 \subsection{SonarQube}
 \label{subsec:sonarqube}
 SonarQube\footnote{\href{http://www.sonarqube.org/}{http://www.sonarqube.org/}} is an open source project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
-Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks for several security issues (e.g. from the OWSASP Top 10 list).
+Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks with an own rule engine (Squid) for several security issues (e.g. from the OWSASP Top 10 list).
 Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
 The main difference to CI tools, is the feature to manage the found issues.
 Over plugins it is possible to extend the analysis scope to over 20 programming languages.
@@ -327,18 +374,6 @@ In the menu issues and issue-drilldown one can sort the issue list, search for i
 \item Negative: In Rule-Management one can filter rules by tags and categories (bugs, security bugs), but you can not use those filters in the issue management. This leads to a big list of issues where you cant distinguish e.g. between a unused code and security issue.
  
 \end{itemize}
-
-
-
-
-
-
-%We subdivide our evaluations by programming language because the analyzers and their main purpose differs heavily in respect to their target language.
-
-%\input{chapter_c}
-
-
-
 
 
 
