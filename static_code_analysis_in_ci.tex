@@ -89,7 +89,7 @@
 
 
 \begin{abstract}
-Static code analysis should run frequently in an continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reported in a clear and meaningful fashion. Additionally, results might be combined, reworked, concentrated or filtered. We use only open source tools that are freely available and examine how they work together and what their results look like.
+Static code analysis should run frequently in a continuous integration lifecycle. Each run produces lots of information that need to be reviewed, evaluated and integrated in the ongoing development process. Therefore, the analysis results should be reported in a clear and meaningful fashion. Additionally, results might be combined, reworked, concentrated or filtered. We use only open source tools that are freely available and examine how they work together and what their results look like.
 \end{abstract}
 
 % no keywords
@@ -120,13 +120,14 @@ In our paper, we compare and evaluate the issue reporting capabilities in two CI
 We integrated the popular analyzers FindBugs and PMD in each development tool above and executed them on a Java test project (JEdit\footnote{\href{http://www.jedit.org/}{JEdit: An open source text editor written in Java}}) with a variety of issues.
 
 
-First we motivated and introduced the idea of our work in the introduction \ref{sec:introduction}.
+We motivated and introduced the idea of our work in the introduction \ref{sec:introduction}.
 Next we explain the foundations of static code analysis in section \ref{sec:static_code_analysis} and \ref{subsec:static_code_analysis_foundations}, with the classification of lexical- and data flow analysis (\ref{subsubsec:lex_analysis} and \ref{subsubsec:dataflow_analysis}) and the two popular analyzer FindBugs and PMD we used in our evaluation.
 
-Then we differentiate between the possibilities where to apply static code analysis, in IDE's, CI systems and CQM systems in the sections \ref{sec:static_code_analysis_ide}, \ref{sec:static_code_analysis_ci} and \ref{sec:static_code_analysis_code_quality_management} and explain for the example Jenkins in subsection \ref{subsec:ci_levels_of_integration} the levels of integration in CI.
-Thereby, we introduce the open source tools we used from those three categories: Eclipse (\ref{sec:static_code_analysis_ide}), Jenkins (\ref{subsec:jenkins}), Teamcity (\ref{subsec:teamcity}) and SonarQube (\ref{subsec:sonarqube}).
+Then we differentiate between the possibilities where to apply static code analysis, in IDE's, CI systems and CQM systems in the sections \ref{sec:static_code_analysis_ide}, \ref{sec:static_code_analysis_ci} and \ref{sec:static_code_analysis_code_quality_management} and explain the levels of integration in CI for Jenkins in subsection \ref{subsec:ci_levels_of_integration}.
+Thereby, we introduce the open source tools we evaluated: Eclipse (\ref{sec:static_code_analysis_ide}), Jenkins (\ref{subsec:jenkins}), Teamcity (\ref{subsec:teamcity}) and SonarQube (\ref{subsec:sonarqube}).
 
 In our evaluation in section \ref{sec:evaluation} we decide for an evaluation strategy (\ref{subsec:walkthrough}), identify important evaluation questions for our evaluation walk-through (\ref{subsubsec:evaluation_prepare}, \ref{subsubsec:evaluation_run}, \ref{subsubsec:evaluation_results}, \ref{subsubsec:evaluation_manage}), explain our evaluation results for every tested tool in the subsections \ref{subsec:evaluation_eclipse}, \ref{subsec:evaluation_jenkins}, \ref{subsec:evaluation_teamcity} and \ref{subsec:evaluation_sonarqube} and create a matrix to compare the evaluated tools in subsection \ref{subsec:comparation}.
+
 
 Finally we conclude our work in section \ref{sec:conclusion}.
 
@@ -135,28 +136,28 @@ Finally we conclude our work in section \ref{sec:conclusion}.
 \subsection{Overview}
 \label{subsec:static_code_analysis_overview}
 Static code or program analysis is an automated analysis performed on the static source code of a program without executing it \cite{Static_Code_Analysis_def}.
-It aims to enhance robustness and to find errors and all kind of programming mistakes early during the coding and testing phases, to reduce the effort of bugfixing after the release of the software.
+The aims is to enhance robustness and to find errors and all kind of programming mistakes early during the coding and testing phases, to reduce the effort of bugfixing after the release of the software.
 
 
 Analyzer who execute the program and analyze the dynamic behavior on the binaries are called dynamic code analyzers.
 Those analyzers might be easier to implement, because they analyze the already loaded binaries and won't have to deal with complicated programming language features, like reflection and anonymous classes, but on the other hand, they are limited in their reporting capabilities.
 Modern approaches try to combine both or try to break down the source code in a simpler immediate representation.
-The analysis framework Soot\footnote{\href{https://sable.github.io/soot/}{Soot: A framework for analyzing and transforming Java and Android Applications}} for example transforms complicated Java code to a three-operator code, called Jimple and allows to implement analyzers on this easier representation.
+The analysis framework Soot\footnote{\href{https://sable.github.io/soot/}{Soot: A framework for analyzing and transforming Java and Android Applications}} for example transforms complicated Java code into a three-operator code, called Jimple and allows to implement analyzers on an easier representation.
 However, dynamic or hybrid code analyzers are out of scope for this work and not further mentioned.
 
 
 Especially for low-level programming languages like C, static code analysis became a crucial part of software development to find memory leaks and other coding mistakes.
 Hence, it is used automatically in compilers to find rough programming mistakes and most common security flaws.
-Anyway, detailed or special purpose security analyzers can't be part of a compiler, they need to be applied externally to keep development performance and with custom rules to decrease the number of false positive findings.
+Anyway, detailed or special purpose security analyzers can't be part of a compiler, they need to be applied externally with custom rules to decrease the number of false positives and to increase development performance.
 
-Typical types of analyses are:
+Typical types of analyses do:
 \begin{itemize}
 	\item Type checking
 	\item Style/Code quality checking
 	\item Program/Property verification
 	\item Pointer, Buffer, file and memory checking
 	\item Control flow management
-	\item Initialization and shutdown
+	\item Initialization and shutdown checks
 \end{itemize}
 
 Increasing the precision (less false positive) and performance, as well as decreasing the recall (less false negatives) of analyzers is the prevailing goal of the research in this area and characterizes the quality of a static code analyzer.
@@ -179,42 +180,46 @@ Finally, they use external rules and security knowledge to perform the analysis 
 	\label{fig:analysis}
 \end{figure}
 
-It is possible to differentiate two different kinds of analyses, lexical and data flow analysis.
+It is possible to differentiate two kinds of analyses, lexical- and data flow analysis.
 
 
 \subsubsection{Lexical Analysis}
 \label{subsubsec:lex_analysis}
+
+
 The most analyzers do a form of lexical analysis.
 They build a model like an AST with symbol tables, analyze nodes against specific rules and use pattern matching to find anomalies and bugs.
-An early and easy example (2001) for such an analyzer is the Rough Auditing Tool for Security (RATS)\cite{Static_code_analysis_book_Chess:2007}, now acquired by the successful commercial tool Fortify\footnote{\href{http://www8.hp.com/de/de/software-solutions/application-security/}{Fortify: Static code analyzer by HP}}, that finds security and memory flaws in C source code, by doing a lexical analysis with XML-style rules, that contain already detailed descriptions of the corresponding problem.
+An early and simple example from 2001 for such an analyzer is the Rough Auditing Tool for Security (RATS)\cite{Static_code_analysis_book_Chess:2007}, now acquired by the successful commercial tool Fortify\footnote{\href{http://www8.hp.com/de/de/software-solutions/application-security/}{Fortify: Static code analyzer by HP}}, that finds security and memory flaws in C source code, by doing a lexical analysis with XML-style rules, that contain already detailed descriptions of the corresponding problem.
 
 
 \subsubsection{Dataflow Analysis}
 \label{subsubsec:dataflow_analysis}
+
+
 A data flow analysis uses additional models, like a \textit{Data Flow}- and \textit{Control Flow Graph (CFG)}, to find potential vulnerabilities and anomalies, by tracking data from inputs/sources to a leak/sink.
 Typical analyses of that type are called Taint- or Live Variable Analysis.
-The easiest kind of such an analyzer operates only in a single function body (\textit{intra-procedural}).
+The easiest approach of such an analyzer operates only in a single function body (\textit{intra-procedural}).
 Depending on the desired goal, such an analysis can be \textit{flow-sensitive} (forward or top-down approach), to get control flow information about the past with more precision, or can be \textit{flow-insensitive} (backward or bottom-up approach), to get information about the future, but with less precision.
 
 
-To extend the analysis scope to other functions, classes and packages (\textit{inter-procedural}), and automatically cover the different contexts (\textit{context-sensitivity}) of a whole program with variable aliases and other language features, additional models, like \textit{Call Graphs}, \textit{Point-To-Sets} and \textit{Inter-procedural Control Flow Graph's} are necessary.
+To extend the analysis scope to other functions, classes and packages (\textit{inter-procedural}), and automatically cover the different caller and callee contexts (\textit{context-sensitivity}) of a whole program with variable aliases and other language features, additional models, like \textit{Call Graphs}, \textit{Point-To-Sets} and \textit{Inter-procedural Control Flow Graph's} are necessary.
 Examples for sophisticated inter-procedural analyzers are Coverity\footnote{\href{https://www.coverity.com}{Coverity: Commercial inter-procedural static code analyzer}} and FlowDroid\footnote{\href{http://sseblog.ec-spride.de/tools/flowdroid}{FlowDroid: Context-, flow-, field-, object-sensitive and lifecycle-aware static taint analysis tool for Android applications}} from Eric Bodden at the TU Darmstadt.
-With modern language features like reflection, virtual dispatch and multi-threading, static code analysis becomes more and more complex, hence the performance or precision decreases.
+With modern language features like reflection, virtual dispatch and multi-threading, static code analysis becomes more and more complex, hence the performance and or precision decreases.
 
 
 FindBugs and PMD implement a data flow analysis and they are the open source static analyzers we used later in our work for the evaluation.
 Hence, they are described now.
 
 \paragraph{PMD}
-is a source code analyzer for Java, JavaScript, XML and XSL to find common programming flaws like unused variables, empty catch blocks, unnecessary object creation, etc.
-It uses a set of rules, specified in a Java or XPath language, on an AST and control flow graph with data flow nodes to produce a report with rule violations in XML format.
+Is a source code analyzer for Java, JavaScript, XML and XSL to find common programming flaws like unused variables, empty catch blocks, unnecessary object creation, etc.
+It uses a set of rules, specified in a Java or XPath language, on an AST and a control flow graph with data flow nodes to produce a report with rule violations in XML format.
 
 
 \paragraph{FindBugs}
-analyzes Java class files for programming defects and uses nearly 300 bug pattern with different categories (bad practice, correctness, etc.) and severity classes (high, medium and low)\cite{Findbugs}.
+Analyzes Java class files for programming defects and uses nearly 300 bug pattern with different categories (bad practice, correctness, etc.) and severity classes (high, medium and low)\cite{Findbugs}.
 Unlike PMD, it is possible to write custom detectors in Java as plugins to analyze java-bytecode or source code.
 The detectors use techniques like visitor patterns over class files, with state-machines to save types, stack-values, constants and other information and by traversing the control flow graph, to save conditional information.
-The FindBugs detectors are usually not inter-procedural, but do an additional global analysis to know variable scopes and subtype-relationships.
+The FindBugs detectors are usually not inter-procedural, but do an additional global analysis to get knowledge about variables scopes and subtype-relationships.
 
 
 Now it is important to distinguish when to apply analyzers in a Software Development Lifecycle.
@@ -233,10 +238,10 @@ Most analyzer, like FindBugs and PMD, exist as stand-alone version and allow the
 
 \section{Static code analysis in IDE}
 \label{sec:static_code_analysis_ide}
-It is straightforward to integrate common analyzers like PMD and FindBugs in an Integrated Development Environment (IDE) like like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
+It is straightforward to integrate common analyzers like PMD and FindBugs in an Integrated Development Environment (IDE) like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
 
 With IDE (Integrated development environment), we mean a program ``that provides comprehensive facilities to computer programmers for software development. An IDE normally consists of a source code editor, build automation tools and a debugger.''\footnote{\href{http://en.wikipedia.org/wiki/Integrated_development_environment}{Integrated development environment}}
-The IDE is usually the program that programmers use to develop new code, review code or fix bugs and issues. Since the programmer is used to navigate through the source using its IDE, it would be very helpful to enrich this environment by additional information. In contrast, reviewing analysis results in an independent and specialized program or website, code formatting and navigation can differ dramatically. Also, when it comes to fixing an issue, already being in the IDE means, a programmer can just make its changes instead of switching programs and locating the corresponding code location.
+The IDE is usually the program that programmers use to develop new code, review code or fix bugs and issues. Since the programmer is used to navigate through the source using the IDE, it would be very helpful to enrich this environment by additional information. In contrast, reviewing analysis results in an independent and specialized program or website, code formatting and navigation can differ dramatically. Also, when it comes to fixing an issue, already being in the IDE means, a programmer can just make its changes instead of switching programs and locating the corresponding code location.
 
 Static code analysis on IDE level is a common choice for many projects. Since the compiler does many static analysis, it is effectively integrated into any IDE that can start the compile process and interprets that compilers output.
 
@@ -250,9 +255,9 @@ Advantages of integrating additional static code analyzers in IDEs:
 	\item Extensibility thorough project specific rules
 \end{itemize}
 
-However disadvantages arise in bigger projects. Analyzers, especially data flow analyzers, tend to not to scale for big projects. 
+However disadvantages arise in bigger projects, especially data flow analyzers, tend to scale not very well. 
 There is no central way to configure the analyzer rules, to improve the results and performance.
-Many developer tend to suppress warnings from such analyzers, since they produce a lot of false positives.
+Many developers tend to suppress warnings from such analyzers, since they produce a lot of false positives.
 Hence, it is desired to have a central and independent analyzer, which can run on the remote repository code regularly and with predefined settings.
 
 In this paper. we used the popular open source IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
@@ -265,23 +270,23 @@ Continuous integration (CI) firstly proposed by Grady Booch \cite{CI-Definition:
 
 Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 \begin{itemize}
-	\item[+] \textit{Immediate Notification}
+	\item[+] \textit{Immediate Notification}:\\
 	CI ensures that ongoing changes to the source code do not break the intent or design of the software. If a change does break the software, that break is identified immediately and can be fixed with a minimal cost and impact to the projects schedule.
-	\item[+] \textit{Automated Testing and Deploying}
+	\item[+] \textit{Automated Testing and Deploying}:\\
 	CI enables many automation possibilities. The most useful automation area is testing in form of Unit- and Integration-Testing, to find problems after component integration and change introduced bugs in previously working components. 
 	Finally a correct configured CI system can automate the deployment of software releases. 
-	\item[+] \textit{Secure Development}
+	\item[+] \textit{Secure Development}:\\
 	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
 	security testing and secure code review begins when a project begins and runs continuously
-	throughout project development. With CI, security vulnerabilities testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
+	throughout project development. With CI, vulnerability testing becomes part of the regression test bed, executed automatically with each successive build on the CI platform.
 	
-	\item[+] \textit{Changing Testing Economics}
+	\item[+] \textit{Changing Testing Economics}:\\
 	Using CI for build, test, and analysis automation has increased the depth and breadth of tests while also making them faster and less expensive. By making it cheap and easy to perform tests, teams are encouraged to test more and test sooner in the development cycle, reducing the cost of fixing bugs.
 	
-	\item[+] \textit{Trend and History}
+	\item[+] \textit{Trend and History}:\\
 	CI enables a higher management layer to view the history and trend of issues and builds.
 	
-	\item[-] \textit{CI Configuration}
+	\item[-] \textit{CI Configuration}:\\
 	The configuration of a CI instance can be very troublesome and involves the understanding of many different tools. To create a working tool chain of testing, analyzing and building, with many thresholds and parameters the developer team has to understand every tool and have to tune parameters after gaining more experience.
 \end{itemize}
 
@@ -289,7 +294,7 @@ Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 
 \subsection{Levels of Integration}
 \label{subsec:ci_levels_of_integration}
-Depending on how continuous integration is accomplished in a given process management, static code analysis can be performed at different \textit{locations}, times and with different automation and reporting levels. According to \cite[p. 6ff]{Jenkins:Smart:2011}, there are \textit{7 phases} of applying continuous integration to a specific development. For this overview, only 3 phases apply: \textit{Phase 1} there is no common build server, \textit{Phase 2} there is build server but builds run on a fixed (nightly) schedule and \textit{Phase 7} builds and tests (including analysis, measures) are issued as changes are committed.
+Depending on how continuous integration is accomplished in a given process management, static code analysis can be performed at different \textit{locations}, times and with different automation and reporting levels. According to \cite[p. 6ff]{Jenkins:Smart:2011}, there are \textit{7 phases} of applying continuous integration to a specific development. For this overview, only 3 phases apply: \textit{Phase 1} there is no common build server, \textit{Phase 2} there is a build server but builds run on a fixed (nightly) schedule and \textit{Phase 7} builds and tests (including analysis, measures) are issued as changes are committed.
 
 \begin{itemize}
 	\item[1] \textit{No Build Server} \\
@@ -300,7 +305,7 @@ Depending on how continuous integration is accomplished in a given process manag
 	The build server could also run static code analysis and quality measures at each build and publish the results. Even notifications are possible, although they would not be accurately addressed since the system does not know which commit introduced the issue and can therefore not just notify the appropriate author.
 	
 	\item[3] \textit{Continuous Integration Environment} \\
-	The server runs all test, analysis and code measures at each commit, publishes the results and notifies the appropriate developer when the build failed or new issues were introduced through his change.
+	The server runs all tests, analyses and code measures at each commit, publishes the results and notifies the appropriate developer when the build failed or new issues were introduced through his change.
 \end{itemize}
 
 
@@ -352,18 +357,18 @@ Advantages and disadvantages of Code Quality Management systems:
 \end{itemize}
 
 Coverity and Fortify, as cloud services, provide beside commercial, sophisticated static code analysis, advanced issue management features and can be seen already as Code Quality Management tools.
-Furthermore, CQM and CI systems can work together, even though there are not many approaches to accomplish this yet. 
+Furthermore, CQM, IDE and CI systems can work together, even though there are not many approaches to accomplish this yet. 
 Anyway, it is possible to start the analysis in CQM systems continuously over a configuration in a CI tool.
 SonarQube is an example for a typical, external Code Quality Management system to run several analyzers with different rules on source code.
 
 \subsection{SonarQube}
 \label{subsec:sonarqube}
-SonarQube\footnote{\href{http://www.sonarqube.org/}{http://www.sonarqube.org/}} is an open source project, implemented as web application within its own webserver, with the aim to analyze and manage the quality of source code. 
+SonarQube\footnote{\href{http://www.sonarqube.org/}{http://www.sonarqube.org/}} is an open source project, implemented as web application within its own webserver, with the aim to monitor, analyze and manage the quality of source code. 
 Besides analysis against common coding guidelines, like duplicate code, missing comments and potential bugs, it also checks with an own rule engine (Squid) for several security issues (e.g. from the OWSASP Top 10 list).
 Therefore it provides a central place to manage intuitively analysis rules from different analyzer extensions.
 The main difference to CI tools, is the feature to manage the found issues.
 Over plugins it is possible to extend the analysis scope to over 20 programming languages.
-Finally it is even possible to start a SonarQube Analysis over Jenkins with the corresponding Jenkins plugin\footnote{\href{http://docs.sonarqube.org/display/SONAR/Configuring+SonarQube+Jenkins+Plugin}{http://docs.sonarqube.org/display/SONAR/Configuring+SonarQube+Jenkins+Plugin}}  or in the Eclipse IDE\footnote{\href{http://docs.sonarqube.org/display/SONAR/SonarQube+in+Eclipse}{http://docs.sonarqube.org/display/SONAR/SonarQube+in+Eclipse}}.
+Finally it is even possible to start a SonarQube Analysis over Jenkins with the corresponding Jenkins plugin\footnote{\href{http://docs.sonarqube.org/display/SONAR/Configuring+SonarQube+Jenkins+Plugin}{http://docs.sonarqube.org/display/SONAR/Configuring+SonarQube+Jenkins+Plugin}}  or with a plugin in the Eclipse IDE\footnote{\href{http://docs.sonarqube.org/display/SONAR/SonarQube+in+Eclipse}{http://docs.sonarqube.org/display/SONAR/SonarQube+in+Eclipse}}.
 
 
 
@@ -377,7 +382,7 @@ This wide-used, informal, very cost efficient and effective method is proven to 
 The usability inspection over heuristic evaluation method uses a small group of usability experts, who evaluate a
 user interface using a set of guidelines and noting the severity of
 each usability problem and where it exists. 
-We combine it with a cognitive walk-though, in the way, that three experts go through the tools with a cognitive expected path in context of applying static code analysis with an additional usability guidelines list for every stage.
+We combine it with a cognitive walk-though, in the way, that three experts go through the tools with a cognitive expected path in context of applying static code analysis with a additional usability guidelines list for every stage.
 
 
 \subsection{Walk-through stages and evaluation questions}
@@ -398,7 +403,7 @@ We identified four stages of our walk-through and evaluate several usability gui
 	Configuring static code analyzers is mandatory. For example, there is a huge trade of between accuracy and speed. Accurate analysis can result in very high computational costs. Keep in mind that the analysis is supposed to run for each commit. If an analyzer run takes hours, this would not be practical anymore.
 	
 	\item \textit{Is it possible to view the rules?} \\
-	This question targets the openness of the used static analysers. It can be very helpful to be able to view all supported rules if you want, for instance, check if a specific feature is checked or not. Additionally, viewing the rules can help to understand why an issue was reported and how the code can be improved.
+	This question targets the transparency of the used static analyzers. It can be very helpful to be able to view all supported rules if you want, for instance, check if a specific feature is checked or not. Additionally, viewing the rules can help to understand why an issue was reported and how the code can be improved.
 	
 	\item \textit{Is it possible to choose, add, edit, delete rules?} \\
 	This is related to the previous question, but goes a little further. Imaging you got ascertain that at specific flaw is not detected by a static code analyzer. In case, the analyzer supports the editing of the used ruleset, you can simply add a custom rule or edit an existing one.
@@ -439,7 +444,7 @@ We identified four stages of our walk-through and evaluate several usability gui
 	Corresponding to the question before, a description can also contain possible solutions to the issue, that might be helpful to resolve the problem faster.
 	
 	\item \textit{Is there a possibility to filter issues? (severity, category, tag, ...)} \\
-	For Projects with many issues it is important to filter for the most important ones, to speed up code views, to find the most common issue categories and to prioritize issues.
+	For projects with many issues it is important to filter for the most important ones, to speed up code reviews, to find the most common issue categories and to prioritize issues.
 \end{itemize}
 
 
@@ -447,10 +452,10 @@ We identified four stages of our walk-through and evaluate several usability gui
 \label{subsubsec:evaluation_manage}
 \begin{itemize}
 	\item \textit{Is it possible to assign issues to developers?} \\
-	Analysis results serve as input for code reviews. Such reviews need to get managed and scheduled and therefore an important feature is the possibility assign issues to developers.
+	Analysis results serve as input for code reviews. Such reviews need to get managed and scheduled and therefore an important feature is the possibility to assign issues to developers.
 	
-	\item \textit{Is is possible to edit issue status? (Resolved, False positive, ...)} \\
-	Since many analyzers report false positives or duplicate issues, it is important to mark issues as resolved or false positives to prevent code review overheads.
+	\item \textit{Is is possible to edit issues status? (Resolved, False positive, ...)} \\
+	Since many analyzers report false positives or duplicate issues, it is important to mark issues as resolved or false positive to prevent code review overheads.
 \end{itemize}
 
 
@@ -480,8 +485,8 @@ Visualization of analysis results is done by free plugins only. In general, the 
 \label{subsec:evaluation_teamcity}
 
 
-The installation of Teamcity, consisting of a webserver and a database was as easy as in Jenkins, but assisted by an installation wizard, hence slightly easier. 
-Since it is also a highly customizable CI, it supports every programming language and only the static code analyzer extensions are language dependent.
+The installation of Teamcity, consisting of a webserver and a database and was as easy as in Jenkins, but assisted by an installation wizard, hence slightly easier. 
+Since it is also a highly customizable CI, it supports every programming language and only the externally used static code analyzer are language dependent.
 
 
 But the extensibility is the biggest difference to Jenkins.
@@ -493,9 +498,9 @@ For our evaluation we had to install and configure the analyzers FindBugs and PM
 Hence, it is not possible to manage rules at a central instance and much effort to install, configure and run different analyzers with custom rulesets.
 
 
-Since there are no static code analyzers integrated in Teamcity, the issue presentation after the XML report is just a non-user-friendly, parsed XML tree of issues with a short description and reference to the line of code.
+Since there are no static code analyzers integrated in Teamcity, the issue presentation from the XML report is just a non-user-friendly, parsed XML tree of issues with analyzer dependent information. In the case of FindBugs and PMD, with a short description and reference to the line of code.
 There is no filter, sort or search option for severity levels or categories and also no issue management capabilities.
-The only positive aspect of this view, is the issue position link, with an IntelliJ hook, to directly jump to the line of code, where the issue is located in the project.
+The only positive aspect of this view, is the issue position link, with an IntelliJ hook, to directly jump to the line of code, where the issue is located in the project, if the IntelliJ plugin is installed.
 
 
 Compared to Jenkins, Teamcity has a more modern user interface, the build process is easier to configure, but lags on plugins for static code analysis and is coupled to other commercial products like the IntelliJ IDE.
@@ -505,7 +510,7 @@ Compared to Jenkins, Teamcity has a more modern user interface, the build proces
 \label{subsec:evaluation_sonarqube}
 
 The last evaluated tool was the CQM system SonarQube.
-SonarQube consists out of 3 parts: the local webserver, a database to load and store analysis results and the SonarQube Runner, which analyses the code specified in a project property file.
+SonarQube consists out of 3 parts: a webserver, a database to load and store analysis results and the SonarQube Runner, which analyses the code specified in a project property file.
 There was no easy installation wizard to install those parts, hence it had a higher installation effort compared to the other evaluated tools.
 Especially the task of starting the analysis, was very unintuitive and accompanied by manual creation of a property file in the file system for specifying project and source code parameters.
 The starting of the analysis was much easier in the other tools and it would be desired to create the property file and start the analysis within SonarQube.
@@ -529,7 +534,7 @@ Unlike the tested CI and IDE tools, SonarQube even comes with security relevant 
 \end{figure}
 
 
-The dashboard of SonarQube as starting point presents an overview for one or all projects with different informative metrics, mostly for code quality, e.g. Lines of Code and duplicate lines of code, but also gives a rating of the project depending on the found issues and other metrics.
+The dashboard of SonarQube as starting point presents an overview for one or all projects with different informative metrics, mostly for code quality, e.g. lines of code and duplicate lines of code, but also gives a rating of the project depending on the found issues and other metrics.
 As seen in figure \ref{fig:sonarqube-dashboard}, it shows the number of issues of the different severity levels (Blocker, Critical, Major, Minor, Info), the rule compliance and a trend graph of the project for different metrics.
 Additionally a table with the most violated rules and resources can be displayed and the number of issues for different issue states.
 One of the main differences of CQM systems to CI systems or IDE's, are the detailed capabilities of managing issues, e.g. assigning issues to developers, assigning issues different states like open, closed, false positive, confirmed, etc. 
@@ -538,7 +543,7 @@ In the menu Issues and Issue-Drilldown it is possible to manage the issues, to s
 
 The only experienced drawback was in the issue management.
 In the Rule-Management one can filter rules by tags and categories (bugs, security bugs), but it is not possible to use those filters in the issue management. 
-This leads to a big list of issues where e.g, unused code issues and security issues can't distinguished anymore.
+This leads to a big list of issues where e.g, unused code issues and security issues can't be distinguished anymore.
 
 
 
