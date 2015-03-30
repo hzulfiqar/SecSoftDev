@@ -216,14 +216,14 @@ It uses a set of rules, specified in a Java or XPath language, on an AST and a c
 
 
 \paragraph{FindBugs}
-Analyzes Java class files for programming defects and uses nearly 300 bug pattern with different categories (bad practice, correctness, etc.) and severity classes (high, medium and low)\cite{Findbugs}.
+Analyses Java class files for programming defects and uses nearly 300 bug patterns with different categories (bad practice, correctness, etc.) and severity classes (high, medium and low)\cite{Findbugs}.
 Unlike PMD, it is possible to write custom detectors in Java as plugins to analyze java-bytecode or source code.
 The detectors use techniques like visitor patterns over class files, with state-machines to save types, stack-values, constants and other information and by traversing the control flow graph, to save conditional information.
 The FindBugs detectors are usually not inter-procedural, but do an additional global analysis to get knowledge about variables scopes and subtype-relationships.
 
 
 Now it is important to distinguish when to apply analyzers in a Software Development Lifecycle.
-Most analyzer, like FindBugs and PMD, exist as stand-alone version and allow the integration in common development tools, like IDE's, CI systems or Code Quality Management systems.
+Most analysers, like FindBugs and PMD, exist as stand-alone version and allow the integration in common development tools, like IDE's, CI systems or Code Quality Management systems.
 
 
 
@@ -238,9 +238,9 @@ Most analyzer, like FindBugs and PMD, exist as stand-alone version and allow the
 
 \section{Static code analysis in IDE}
 \label{sec:static_code_analysis_ide}
-It is straightforward to integrate common analyzers like PMD and FindBugs in an Integrated Development Environment (IDE) like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
+It is straightforward to integrate common analysers like PMD and FindBugs in an Integrated Development Environment (IDE) like Eclipse\footnote{An official list of Source Code Analysis plugins for Eclipse can be found in the \href{http://marketplace.eclipse.org/taxonomy/term/14,31}{Eclipse Marketplace}.}, Netbeans or IntelliJ.
 
-With IDE (Integrated development environment), we mean a program ``that provides comprehensive facilities to computer programmers for software development. An IDE normally consists of a source code editor, build automation tools and a debugger.''\footnote{\href{http://en.wikipedia.org/wiki/Integrated_development_environment}{Integrated development environment}}
+With IDE (Integrated Development Environment), we mean a program ``that provides comprehensive facilities to computer programmers for software development. An IDE normally consists of a source code editor, build automation tools and a debugger.''\footnote{\href{http://en.wikipedia.org/wiki/Integrated_development_environment}{Integrated development environment}}
 The IDE is usually the program that programmers use to develop new code, review code or fix bugs and issues. Since the programmer is used to navigate through the source using the IDE, it would be very helpful to enrich this environment by additional information. In contrast, reviewing analysis results in an independent and specialized program or website, code formatting and navigation can differ dramatically. Also, when it comes to fixing an issue, already being in the IDE means, a programmer can just make its changes instead of switching programs and locating the corresponding code location.
 
 Static code analysis on IDE level is a common choice for many projects. Since the compiler does many static analysis, it is effectively integrated into any IDE that can start the compile process and interprets that compilers output.
@@ -260,13 +260,13 @@ There is no central way to configure the analyzer rules, to improve the results 
 Many developers tend to suppress warnings from such analyzers, since they produce a lot of false positives.
 Hence, it is desired to have a central and independent analyzer, which can run on the remote repository code regularly and with predefined settings.
 
-In this paper. we used the popular open source IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
+In this paper, we used the popular open source IDE Eclipse\footnote{\href{https://eclipse.org/}{https://eclipse.org/}}.
 We decided for Eclipse because it is platform independent and highly extensible. Furthermore, we could integrate our test analyzers PMD and FindBugs into Eclipse. Therefore, the results are comparable with the other platforms we evaluated.
 
 
 \section{Static code analysis in CI}
 \label{sec:static_code_analysis_ci}
-Continuous integration (CI) firstly proposed by Grady Booch \cite{CI-Definition:Booch:1993}, is the software engineering practice, of continuously merging all developer working copies with a shared release master branch several times a day.
+Continuous Integration (CI) firstly proposed by Grady Booch \cite{CI-Definition:Booch:1993}, is the software engineering practice of continuously merging all developers working copies with a shared release master branch several times a day.
 
 Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 \begin{itemize}
@@ -274,7 +274,7 @@ Advantages and disadvantages of Continuous Integration (CI)\cite{SecurityinCI}:
 	CI ensures that ongoing changes to the source code do not break the intent or design of the software. If a change does break the software, that break is identified immediately and can be fixed with a minimal cost and impact to the projects schedule.
 	\item[+] \textit{Automated Testing and Deploying}:\\
 	CI enables many automation possibilities. The most useful automation area is testing in form of Unit- and Integration-Testing, to find problems after component integration and change introduced bugs in previously working components. 
-	Finally a correct configured CI system can automate the deployment of software releases. 
+	Finally, a correct configured CI system can automate the deployment of software releases. 
 	\item[+] \textit{Secure Development}:\\
 	By integrating security testing and secure code analysis, CI can be further leveraged to include secure development practices while minimizing the amount of extra effort required to get the benefits of secure development. Since it is tied to CI,
 	security testing and secure code review begins when a project begins and runs continuously
@@ -315,7 +315,7 @@ Depending on how continuous integration is accomplished in a given process manag
 Jenkins is a widely used tool to control and manage continuous integration tasks. Its main purpose is to monitor the execution of repeated jobs and present their outcomes\footnote{From Jenkins Website, \href{https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins}{Meet Jenkins}}.
 
 We decided for Jenkins because it is OpenSource, highly extensible and the most popular CI tool. To be exact, there are more than 1000 freely available plugins that can be installed by just one click using the Jenkins web interface.
-Beside PMD and FindBugs, there are many more static analyzer available in the plugin repository.
+Beside PMD and FindBugs, there are many more static analysers available in the plugin repository.
 In our research we found, almost every analyzer has a Jenkins plugin available.
 Many OpenSource analyzers, like BrakeMan\footnote{\href{http://brakemanscanner.org/}{http://brakemanscanner.org/}}, Cppcheck\footnote{\href{http://cppcheck.sourceforge.net/}{http://cppcheck.sourceforge.net/}} as well as popular commercial tools like Coverity\footnote{\href{http://www.coverity.com/}{http://www.coverity.com/}} and Fortify\footnote{\href{http://www8.hp.com/de/de/software-solutions/application-security/}{http://www8.hp.com/de/de/software-solutions/application-security/}}.
 But not all plugins provide a full analyzer.
@@ -382,7 +382,7 @@ This wide-used, informal, very cost efficient and effective method is proven to 
 The usability inspection over heuristic evaluation method uses a small group of usability experts, who evaluate a
 user interface using a set of guidelines and noting the severity of
 each usability problem and where it exists. 
-We combine it with a cognitive walk-though, in the way, that three experts go through the tools with a cognitive expected path in context of applying static code analysis with a additional usability guidelines list for every stage.
+We combine it with a cognitive walk-though, in the way, that three experts go through the tools with a cognitive expected path in context of applying static code analysis with an additional usability guidelines list for every stage.
 
 
 \subsection{Walk-through stages and evaluation questions}
@@ -462,6 +462,9 @@ We identified four stages of our walk-through and evaluate several usability gui
 \subsection{Eclipse}
 \label{subsec:evaluation_eclipse}
 
+Eclipse is an open source and extensible Integrated Development Environment (IDE). It is easy to add plugins which can make development environment more customisable. It does not provide any built-in feature for static code analysis. However, this can be achieved by installing some available plugins. Adding additional plugins to eclipse is sometimes not an easy task because it is not intuitive regarding the configuration. It could take a lot of time for configuring and exploring the third party tools. There are available analysers that provide best effort vulnerabilities detection and analysis.
+
+Once installation of any analyser is done, than it is easy to run analysis on the code. Analysis process usually runs in background and it cannot be seen. After the process finishes, results can be seen on the console. Reporting capabilities are not much more informative. Only very generic information is available about the defects detected during the analysis process. However, issues' severity levels, their mapping to source code and general description is made available by the tools. There is no possibility to add or change the analysis rules. Furthermore, it is not possible in this environment to modify issue status, assignment to developer, filtering and viewing issues' histories.
 \subsection{Jenkins}
 \label{subsec:evaluation_jenkins}
 
